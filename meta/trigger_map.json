@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "description": "Keyword bootstrap map. Stage 1 of the hybrid activation model (see core/semantic_activation.md). Maps trigger keywords to activation targets. Semantic refinement may add targets not listed here.",
+  "domains": {
+    "web": [
+      "web",
+      "ui",
+      "frontend",
+      "browser",
+      "form",
+      "page",
+      "cookie",
+      "session",
+      "html",
+      "spa",
+      "dashboard",
+      "csrf",
+      "xss"
+    ],
+    "api": [
+      "api",
+      "endpoint",
+      "rest",
+      "graphql",
+      "webhook",
+      "object id",
+      "idor",
+      "rate limit",
+      "backend"
+    ],
+    "mobile": [
+      "mobile",
+      "android",
+      "ios",
+      "flutter",
+      "app",
+      "apk",
+      "ipa",
+      "keystore",
+      "keychain",
+      "deep link",
+      "intent",
+      "certificate pinning",
+      "biometric"
+    ],
+    "ai_agentic": [
+      "agent",
+      "autonomous",
+      "multi-agent",
+      "tool calling",
+      "agentic",
+      "orchestration"
+    ],
+    "ai_llm": [
+      "llm",
+      "ai feature",
+      "machine learning",
+      "openai",
+      "anthropic",
+      "gemini",
+      "rag",
+      "vector database",
+      "embedding",
+      "model api",
+      "ai-generated",
+      "chatbot",
+      "copilot",
+      "prompt injection"
+    ],
+    "mcp": [
+      "mcp",
+      "mcp server",
+      "mcp tool",
+      "model context protocol",
+      "tool server"
+    ]
+  },
+  "compliance": {
+    "dpdp": [
+      "personal data",
+      "pii",
+      "consent",
+      "aadhaar",
+      "pan",
+      "email",
+      "phone",
+      "address",
+      "kyc",
+      "user profile",
+      "data retention",
+      "data subject",
+      "data principal",
+      "data fiduciary",
+      "breach"
+    ]
+  },
+  "cwe_categories": {
+    "access_control": [
+      "authorization",
+      "idor",
+      "privilege",
+      "rbac",
+      "ownership",
+      "access control"
+    ],
+    "authentication": [
+      "login",
+      "auth",
+      "password",
+      "mfa",
+      "2fa",
+      "session",
+      "token",
+      "credential"
+    ],
+    "injection": [
+      "sql",
+      "xss",
+      "command injection",
+      "template injection",
+      "ldap",
+      "nosql"
+    ],
+    "input_validation": [
+      "input",
+      "validation",
+      "sanitize",
+      "encoding",
+      "untrusted"
+    ],
+    "business_logic": [
+      "business logic",
+      "workflow",
+      "race condition",
+      "abuse",
+      "transaction"
+    ],
+    "configuration": [
+      "config",
+      "misconfiguration",
+      "default credential",
+      "debug",
+      "headers",
+      "permissions"
+    ],
+    "general": [
+      "general",
+      "baseline",
+      "misc"
+    ]
+  }
+}

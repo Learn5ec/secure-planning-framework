@@ -1,0 +1,85 @@
+{
+  "framework": {
+    "name": "secure-planning-framework",
+    "version": "0.5.0",
+    "status": "in-development",
+    "schema_version": "1.0.0",
+    "description": "Modular secure planning orchestration skill. Converts feature ideas into enforceable security/privacy/compliance blueprints during the planning phase."
+  },
+  "compatibility": {
+    "claude_code": "SKILL.md frontmatter (name + description) at repo root",
+    "cursor": ".cursorrules (root)",
+    "windsurf": ".windsurfrules (root)",
+    "vscode_copilot": ".github/copilot-instructions.md",
+    "mcp": "planned",
+    "npm": "planned",
+    "cli": "planned"
+  },
+  "rule_packs": {
+    "owasp_web": {
+      "source": "OWASP Top 10:2025",
+      "file": "domains/web/web_owasp_top10_2025.md",
+      "version": "2025",
+      "rule_prefix": "OWASP-"
+    },
+    "owasp_api": {
+      "source": "OWASP API Top 10:2023",
+      "file": "domains/api/owasp_api_top10_2023.md",
+      "version": "2023",
+      "rule_prefix": "API-"
+    },
+    "mobile_masvs": {
+      "source": "OWASP MASVS",
+      "file": "domains/mobile/owasp_masvs.md",
+      "version": "2.x",
+      "rule_prefix": "MASVS-"
+    },
+    "ai_agentic": {
+      "source": "OWASP Agentic AI Top 10",
+      "file": "domains/ai/agentic_ai_rules.md",
+      "version": "2026-draft",
+      "rule_prefix": "ASI-"
+    },
+    "ai_llm_governance": {
+      "source": "LLM/AI Security & Governance",
+      "file": "domains/ai/llm_governance_rules.md",
+      "version": "1.x",
+      "rule_prefix": "LLM-GOV-"
+    },
+    "mcp": {
+      "source": "MCP Secure Development",
+      "file": "domains/mcp/mcp_server_rules.md",
+      "version": "1.0",
+      "rule_prefix": "MCP-"
+    },
+    "compliance_dpdp": {
+      "source": "DPDP Act 2023",
+      "files": [
+        "compliance/dpdp/dpdp_rules.md",
+        "compliance/dpdp/dpdpa-compliance.md"
+      ],
+      "version": "2023",
+      "rule_prefix": "DPDP-"
+    },
+    "common_baseline": {
+      "source": "Internal secure engineering baseline",
+      "file": "common/common-considerations.md",
+      "version": "1.0",
+      "rule_prefix": "COM-"
+    },
+    "cwe_mappings": {
+      "source": "Curated CWE",
+      "dir": "cwe/",
+      "version": "curated-1.0",
+      "rule_prefix": "CWE-"
+    }
+  },
+  "planned_compliance": [
+    "GDPR",
+    "HIPAA",
+    "PCI_DSS",
+    "SOC2",
+    "ISO_27001"
+  ],
+  "versioning_policy": "Semantic versioning. Rule packs are versioned independently; the framework version pins a compatible set. Breaking rule-ID changes require a major bump."
+}

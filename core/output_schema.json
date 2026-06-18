@@ -1,0 +1,48 @@
+{
+  "feature_summary": "Description of the feature being evaluated.",
+  "risk_classification": "LOW | MEDIUM | HIGH | CRITICAL",
+  "risk_reasoning": "Explanation for the assigned risk level.",
+  "data_sensitivity": [
+    "List of sensitive data elements involved (e.g., PII, Credentials)."
+  ],
+  "actors": [
+    "List of actors interacting with the feature (e.g., User, Admin, System)."
+  ],
+  "assumptions": [
+    "List of assumptions made during the planning phase."
+  ],
+  "threat_model": [
+    {
+      "threat": "Description of the threat.",
+      "attack_vector": "How the attack would be executed.",
+      "impact": "Business or technical impact of the attack."
+    }
+  ],
+  "security_requirements": [
+    {
+      "rule_id": "Exact Rule ID (e.g., OWASP-A01-001).",
+      "requirement": "Specific security constraint to enforce.",
+      "source": "Source rule file.",
+      "validation": "How to validate the requirement."
+    }
+  ],
+  "compliance_requirements": [
+    {
+      "rule_id": "Exact Rule ID (e.g., DPDP-001).",
+      "requirement": "Specific compliance constraint.",
+      "source": "Source compliance file."
+    }
+  ],
+  "design_constraints": [
+    "List of strict design constraints or user-approved overrides."
+  ],
+  "anti_patterns": [
+    "List of practices that must be avoided in implementation."
+  ],
+  "required_controls": [
+    "List of necessary security controls (e.g., MFA, Encryption)."
+  ],
+  "acceptance_criteria": [
+    "List of testable criteria for feature acceptance."
+  ]
+}

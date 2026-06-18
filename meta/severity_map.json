@@ -1,0 +1,47 @@
+{
+  "version": "1.0.0",
+  "description": "Severity model used for risk_classification and per-rule severity. Maps each level to its meaning, response expectation, and a CVSS band for alignment.",
+  "levels": {
+    "INFO": {
+      "rank": 0,
+      "meaning": "Informational / hardening best practice. No direct exploitability.",
+      "cvss_band": "0.0",
+      "response": "Document; apply where low-cost."
+    },
+    "LOW": {
+      "rank": 1,
+      "meaning": "Limited impact or requires unrealistic preconditions.",
+      "cvss_band": "0.1-3.9",
+      "response": "Fix in normal backlog."
+    },
+    "MEDIUM": {
+      "rank": 2,
+      "meaning": "Exploitable under some conditions; partial impact to C/I/A.",
+      "cvss_band": "4.0-6.9",
+      "response": "Fix before release of the affected feature."
+    },
+    "HIGH": {
+      "rank": 3,
+      "meaning": "Readily exploitable with significant impact to C/I/A.",
+      "cvss_band": "7.0-8.9",
+      "response": "Blocker. Must be controlled before implementation proceeds."
+    },
+    "CRITICAL": {
+      "rank": 4,
+      "meaning": "Trivially exploitable, systemic impact (full compromise, mass data loss, regulatory breach).",
+      "cvss_band": "9.0-10.0",
+      "response": "Hard blocker. No exceptions without explicit, documented user override."
+    }
+  },
+  "feature_risk_inputs": [
+    "data_sensitivity (PII, credentials, financial, health, biometric)",
+    "privilege_level (anonymous, user, admin, system)",
+    "exposure_surface (internal, authenticated, public internet)"
+  ],
+  "escalation_rules": [
+    "Any handling of credentials, financial, health, or biometric data => minimum HIGH baseline.",
+    "Admin or impersonation capability => minimum HIGH baseline.",
+    "Public, unauthenticated exposure of sensitive data => CRITICAL.",
+    "Regulatory (DPDP) violation potential => never below HIGH."
+  ]
+}

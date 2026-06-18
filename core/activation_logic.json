@@ -1,0 +1,201 @@
+{
+  "version": "1.0.0",
+  "activation_model": "hybrid: keyword bootstrap + semantic refinement",
+  "skill_activation_gate": {
+    "purpose": "This skill activates ONLY for security planning/design of a feature, BEFORE implementation. It is generic and applies to ALL solution modules; it is NOT industry-specific.",
+    "phase": "planning_only",
+    "must_not_run_during": [
+      "writing, generating, fixing, or refactoring code",
+      "debugging or resolving runtime/build errors",
+      "UI/UX-only changes, styling, copy, or layout work",
+      "any planning request that does NOT include a security-planning trigger phrase"
+    ],
+    "require_both": [
+      "a planning/design intent (a feature/system is being planned before build)",
+      "an explicit security-planning trigger phrase (or a close paraphrase)"
+    ],
+    "trigger_phrases": [
+      "secure plan",
+      "security plan",
+      "plan securely",
+      "plan it securely",
+      "secure design",
+      "design securely",
+      "secure architecture",
+      "threat model",
+      "security blueprint",
+      "security requirements",
+      "plan before implementation",
+      "plan this feature securely",
+      "secure planning framework",
+      "security review of the plan",
+      "secure feature plan"
+    ],
+    "if_not_triggered": "Remain dormant: do not read rule packs and do not emit a blueprint."
+  },
+  "activation_threshold": 0.4,
+  "scoring": {
+    "keyword_weight": 0.5,
+    "semantic_weight": 0.5,
+    "formula": "score = keyword_weight*keyword_signal + semantic_weight*semantic_signal"
+  },
+  "always_load": [
+    "common/common-considerations.md",
+    "meta/rule_index.json",
+    "core/output_schema.json"
+  ],
+  "domains": {
+    "web": {
+      "file": "domains/web/web_owasp_top10_2025.md",
+      "rule_prefixes": [
+        "OWASP-"
+      ],
+      "triggers": [
+        "web",
+        "ui",
+        "frontend",
+        "browser",
+        "form",
+        "page",
+        "cookie",
+        "session",
+        "html",
+        "spa",
+        "dashboard"
+      ]
+    },
+    "api": {
+      "file": "domains/api/owasp_api_top10_2023.md",
+      "rule_prefixes": [
+        "API-"
+      ],
+      "triggers": [
+        "api",
+        "endpoint",
+        "rest",
+        "graphql",
+        "webhook",
+        "object id",
+        "rate limit",
+        "backend service"
+      ]
+    },
+    "mobile": {
+      "file": "domains/mobile/owasp_masvs.md",
+      "rule_prefixes": [
+        "MASVS-"
+      ],
+      "triggers": [
+        "mobile",
+        "android",
+        "ios",
+        "flutter",
+        "app",
+        "apk",
+        "keystore",
+        "deep link",
+        "intent",
+        "certificate pinning"
+      ]
+    },
+    "ai_agentic": {
+      "file": "domains/ai/agentic_ai_rules.md",
+      "rule_prefixes": [
+        "ASI-"
+      ],
+      "triggers": [
+        "agent",
+        "autonomous",
+        "multi-agent",
+        "tool calling",
+        "orchestration",
+        "agentic"
+      ]
+    },
+    "ai_llm": {
+      "file": "domains/ai/llm_governance_rules.md",
+      "rule_prefixes": [
+        "LLM-GOV-"
+      ],
+      "triggers": [
+        "llm",
+        "ai feature",
+        "openai",
+        "anthropic",
+        "gemini",
+        "rag",
+        "vector database",
+        "model api",
+        "ai-generated",
+        "chatbot",
+        "copilot",
+        "prompt"
+      ]
+    },
+    "mcp": {
+      "file": "domains/mcp/mcp_server_rules.md",
+      "rule_prefixes": [
+        "MCP-"
+      ],
+      "triggers": [
+        "mcp",
+        "mcp server",
+        "mcp tool",
+        "model context protocol",
+        "tool server"
+      ]
+    }
+  },
+  "compliance": {
+    "dpdp": {
+      "files": [
+        "compliance/dpdp/dpdp_rules.md",
+        "compliance/dpdp/dpdpa-compliance.md"
+      ],
+      "rule_prefixes": [
+        "DPDP-"
+      ],
+      "scope": "Personal data of Indian data principals (users in India).",
+      "force_activate_on_personal_data": true,
+      "fail_safe_when_jurisdiction_unknown": "If residency/jurisdiction is not stated, still activate DPDP and record the residency assumption under assumptions; never silently skip.",
+      "triggers": [
+        "personal data",
+        "pii",
+        "consent",
+        "aadhaar",
+        "email",
+        "phone",
+        "address",
+        "kyc",
+        "user profile",
+        "data retention",
+        "data subject",
+        "indian",
+        "india"
+      ]
+    }
+  },
+  "cwe": {
+    "dir": "cwe/",
+    "load_when": "category-specific; load the matching cwe/<category>/ file when that weakness class is in scope",
+    "categories": [
+      "access_control",
+      "authentication",
+      "injection",
+      "input_validation",
+      "business_logic",
+      "configuration",
+      "general"
+    ]
+  },
+  "knowledge": {
+    "dir": "knowledge/",
+    "purpose": "Curated, token-efficient cheat-sheets distilled from data/ raw sources; loaded for quick reference, not as authoritative rules.",
+    "areas": {
+      "owasp": "knowledge/owasp/owasp_cheatsheet.md",
+      "ai": "knowledge/ai/ai_cheatsheet.md",
+      "mobile": "knowledge/mobile/mobile_cheatsheet.md",
+      "compliance": "knowledge/compliance/compliance_cheatsheet.md"
+    }
+  }
+}
