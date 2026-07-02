@@ -1,43 +1,26 @@
 {
-  "version": "1.0.0",
-  "activation_model": "hybrid: keyword bootstrap + semantic refinement",
+  "version": "2.0.0",
+  "activation_model": "always-on with explicit opt-out",
   "skill_activation_gate": {
-    "purpose": "This skill activates ONLY for security planning/design of a feature, BEFORE implementation. It is generic and applies to ALL solution modules; it is NOT industry-specific.",
-    "phase": "planning_only",
-    "must_not_run_during": [
-      "writing, generating, fixing, or refactoring code",
-      "debugging or resolving runtime/build errors",
-      "UI/UX-only changes, styling, copy, or layout work",
-      "any planning request that does NOT include a security-planning trigger phrase"
+    "purpose": "SPF fires by default on every planning and development task. It is generic and applies to ALL solution modules; it is NOT industry-specific.",
+    "model": "always_on",
+    "opt_out_phrases": [
+      "do not use spf skill",
+      "skip spf",
+      "no secure planning",
+      "disable spf",
+      "spf off"
     ],
-    "require_both": [
-      "a planning/design intent (a feature/system is being planned before build)",
-      "an explicit security-planning trigger phrase (or a close paraphrase)"
-    ],
-    "trigger_phrases": [
-      "secure plan",
-      "security plan",
-      "plan securely",
-      "plan it securely",
-      "secure design",
-      "design securely",
-      "secure architecture",
-      "threat model",
-      "security blueprint",
-      "security requirements",
-      "plan before implementation",
-      "plan this feature securely",
-      "secure planning framework",
-      "security review of the plan",
-      "secure feature plan"
-    ],
-    "if_not_triggered": "Remain dormant: do not read rule packs and do not emit a blueprint."
+    "if_opt_out_detected": "Remain dormant: do not read rule packs and do not emit a blueprint.",
+    "note": "Stage 0 keyword/phrase gate has been removed. The skill is active by default. Opt-out is the only suppression mechanism."
   },
-  "activation_threshold": 0.4,
-  "scoring": {
-    "keyword_weight": 0.5,
-    "semantic_weight": 0.5,
-    "formula": "score = keyword_weight*keyword_signal + semantic_weight*semantic_signal"
+  "domain_activation": {
+    "model": "semantic",
+    "description": "After the always-on check, run semantic inference to identify which domain packs to load. Activate domain D if any trigger keyword matches OR the model judges D clearly relevant to the request. Err toward inclusion.",
+    "scoring": {
+      "note": "Numeric confidence scoring is replaced with deterministic domain activation: activate if keyword match OR semantic relevance. No threshold required.",
+      "old_formula_removed": "score = 0.5*keyword_signal + 0.5*semantic_signal >= 0.4 — REMOVED"
+    }
   },
   "always_load": [
     "common/common-considerations.md",
@@ -47,132 +30,67 @@
   "domains": {
     "web": {
       "file": "domains/web/web_owasp_top10_2025.md",
-      "rule_prefixes": [
-        "OWASP-"
-      ],
+      "rule_prefixes": ["OWASP-"],
       "triggers": [
-        "web",
-        "ui",
-        "frontend",
-        "browser",
-        "form",
-        "page",
-        "cookie",
-        "session",
-        "html",
-        "spa",
-        "dashboard"
+        "web", "ui", "frontend", "browser", "form", "page",
+        "cookie", "session", "html", "spa", "dashboard"
       ]
     },
     "api": {
       "file": "domains/api/owasp_api_top10_2023.md",
-      "rule_prefixes": [
-        "API-"
-      ],
+      "rule_prefixes": ["API-"],
       "triggers": [
-        "api",
-        "endpoint",
-        "rest",
-        "graphql",
-        "webhook",
-        "object id",
-        "rate limit",
-        "backend service"
+        "api", "endpoint", "rest", "graphql", "webhook",
+        "object id", "rate limit", "backend service"
       ]
     },
     "mobile": {
       "file": "domains/mobile/owasp_masvs.md",
-      "rule_prefixes": [
-        "MASVS-"
-      ],
+      "rule_prefixes": ["MASVS-"],
       "triggers": [
-        "mobile",
-        "android",
-        "ios",
-        "flutter",
-        "app",
-        "apk",
-        "keystore",
-        "deep link",
-        "intent",
-        "certificate pinning"
+        "mobile", "android", "ios", "flutter", "app", "apk",
+        "keystore", "deep link", "intent", "certificate pinning"
       ]
     },
     "ai_agentic": {
       "file": "domains/ai/agentic_ai_rules.md",
-      "rule_prefixes": [
-        "ASI-"
-      ],
+      "rule_prefixes": ["ASI-"],
       "triggers": [
-        "agent",
-        "autonomous",
-        "multi-agent",
-        "tool calling",
-        "orchestration",
-        "agentic"
+        "agent", "autonomous", "multi-agent", "tool calling",
+        "orchestration", "agentic"
       ]
     },
     "ai_llm": {
       "file": "domains/ai/llm_governance_rules.md",
-      "rule_prefixes": [
-        "LLM-GOV-"
-      ],
+      "rule_prefixes": ["LLM-GOV-"],
       "triggers": [
-        "llm",
-        "ai feature",
-        "openai",
-        "anthropic",
-        "gemini",
-        "rag",
-        "vector database",
-        "model api",
-        "ai-generated",
-        "chatbot",
-        "copilot",
-        "prompt"
+        "llm", "ai feature", "openai", "anthropic", "gemini",
+        "rag", "vector database", "model api", "ai-generated",
+        "chatbot", "copilot", "prompt"
       ]
     },
     "mcp": {
       "file": "domains/mcp/mcp_server_rules.md",
-      "rule_prefixes": [
-        "MCP-"
-      ],
+      "rule_prefixes": ["MCP-"],
       "triggers": [
-        "mcp",
-        "mcp server",
-        "mcp tool",
-        "model context protocol",
-        "tool server"
+        "mcp", "mcp server", "mcp tool",
+        "model context protocol", "tool server"
       ]
     }
   },
   "compliance": {
+    "_status": "DISABLED — pending org-wide implementation decision. Do not activate any compliance pack until re-enabled.",
     "dpdp": {
+      "_disabled": true,
+      "_reason": "DPDPA compliance is commented out pending org-wide DPDPA implementation clarity. Re-enable when org decision is made.",
       "files": [
         "compliance/dpdp/dpdp_rules.md",
         "compliance/dpdp/dpdpa-compliance.md"
       ],
-      "rule_prefixes": [
-        "DPDP-"
-      ],
-      "scope": "Personal data of Indian data principals (users in India).",
-      "force_activate_on_personal_data": true,
-      "fail_safe_when_jurisdiction_unknown": "If residency/jurisdiction is not stated, still activate DPDP and record the residency assumption under assumptions; never silently skip.",
-      "triggers": [
-        "personal data",
-        "pii",
-        "consent",
-        "aadhaar",
-        "email",
-        "phone",
-        "address",
-        "kyc",
-        "user profile",
-        "data retention",
-        "data subject",
-        "indian",
-        "india"
-      ]
+      "rule_prefixes": ["DPDP-"],
+      "force_activate_on_personal_data": false,
+      "fail_safe_when_jurisdiction_unknown": "DISABLED — do not activate DPDP regardless of jurisdiction.",
+      "triggers": []
     }
   },
   "cwe": {
@@ -186,7 +104,8 @@
       "business_logic",
       "configuration",
       "general"
-    ]
+    ],
+    "_path_note": "B6 RESOLVED: cwe/validation/ renamed to cwe/input_validation/ to match this config."
   },
   "knowledge": {
     "dir": "knowledge/",

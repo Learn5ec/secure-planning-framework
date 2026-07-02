@@ -1,3 +1,12 @@
+<!-- ============================================================
+     DPDPA DISABLED
+     This file is NOT loaded by the skill until further notice.
+     DPDPA compliance is commented out pending org-wide implementation
+     decision. Do not activate or reference these rules in any blueprint.
+     To re-enable: set compliance.dpdp._disabled = false in activation_logic.json
+     and remove this notice.
+     ============================================================ -->
+
 # Digital Personal Data Protection Act, 2023 — Extended Compliance Rules
 
 ---

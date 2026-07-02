@@ -1,48 +1,165 @@
 {
-  "feature_summary": "Description of the feature being evaluated.",
-  "risk_classification": "LOW | MEDIUM | HIGH | CRITICAL",
-  "risk_reasoning": "Explanation for the assigned risk level.",
-  "data_sensitivity": [
-    "List of sensitive data elements involved (e.g., PII, Credentials)."
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://secure-planning-framework/core/output_schema.json",
+  "title": "SecurePlanningFramework Blueprint",
+  "description": "Enforceable security blueprint produced by the Secure Planning Framework (SPF v2.0). Every field marked required MUST be present. Use output_example.json for a populated reference.",
+  "type": "object",
+  "required": [
+    "feature_summary",
+    "risk_classification",
+    "risk_reasoning",
+    "threat_model",
+    "security_requirements",
+    "design_constraints",
+    "anti_patterns",
+    "acceptance_criteria"
   ],
-  "actors": [
-    "List of actors interacting with the feature (e.g., User, Admin, System)."
-  ],
-  "assumptions": [
-    "List of assumptions made during the planning phase."
-  ],
-  "threat_model": [
-    {
-      "threat": "Description of the threat.",
-      "attack_vector": "How the attack would be executed.",
-      "impact": "Business or technical impact of the attack."
+  "properties": {
+    "feature_summary": {
+      "type": "string",
+      "description": "Plain-language description of the feature or task being evaluated.",
+      "minLength": 10
+    },
+    "risk_classification": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Overall risk level for this feature, derived from data sensitivity, privilege, and exposure surface."
+    },
+    "risk_reasoning": {
+      "type": "string",
+      "description": "Explanation for the assigned risk_classification.",
+      "minLength": 10
+    },
+    "data_sensitivity": {
+      "type": "array",
+      "description": "Sensitive data elements involved (e.g. PII, credentials, financial, health, biometric).",
+      "items": { "type": "string" }
+    },
+    "actors": {
+      "type": "array",
+      "description": "Actors interacting with the feature (e.g. User, Admin, System, Anonymous).",
+      "items": { "type": "string" }
+    },
+    "assumptions": {
+      "type": "array",
+      "description": "Assumptions made during planning. Must be minimal and explicit — never inferred silently.",
+      "items": { "type": "string" }
+    },
+    "threat_model": {
+      "type": "array",
+      "description": "Realistic threats derived from the activated rule packs. Must not be empty.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["threat_id", "threat", "attack_vector", "impact", "cia"],
+        "properties": {
+          "threat_id": {
+            "type": "string",
+            "description": "Short unique identifier, e.g. T-01.",
+            "pattern": "^T-[0-9]{2,}$"
+          },
+          "threat": {
+            "type": "string",
+            "description": "Description of the threat."
+          },
+          "attack_vector": {
+            "type": "string",
+            "description": "How the attack would be executed."
+          },
+          "impact": {
+            "type": "string",
+            "description": "Business or technical impact."
+          },
+          "cia": {
+            "type": "object",
+            "description": "CIA triad impact.",
+            "required": ["confidentiality", "integrity", "availability"],
+            "properties": {
+              "confidentiality": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW", "NONE"] },
+              "integrity":       { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW", "NONE"] },
+              "availability":    { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW", "NONE"] }
+            }
+          }
+        }
+      }
+    },
+    "security_requirements": {
+      "type": "array",
+      "description": "Enforceable security constraints derived from rule packs. Must not be empty.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "requirement", "source", "severity", "validation"],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "description": "Exact rule ID from the source file, e.g. COM-001, OWASP-A01-001, API-005.",
+            "pattern": "^(COM|OWASP|API|MASVS|ASI|LLM-GOV|MCP|CWE|DPDP)-[A-Z0-9-]+"
+          },
+          "requirement": {
+            "type": "string",
+            "description": "Specific security constraint to enforce."
+          },
+          "source": {
+            "type": "string",
+            "description": "Source rule file path, e.g. common/common-considerations.md."
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+            "description": "Severity of this requirement, derived from the rule's severity field and escalation rules in meta/severity_map.json."
+          },
+          "cwe": {
+            "type": "array",
+            "description": "CWE IDs this requirement addresses, e.g. [CWE-89, CWE-79].",
+            "items": { "type": "string", "pattern": "^CWE-[0-9]+" }
+          },
+          "threat_ref": {
+            "type": "string",
+            "description": "Reference to the threat_id in threat_model this requirement mitigates, e.g. T-01.",
+            "pattern": "^T-[0-9]{2,}$"
+          },
+          "validation": {
+            "type": "string",
+            "description": "Testable acceptance criterion for this requirement."
+          }
+        }
+      }
+    },
+    "compliance_requirements": {
+      "type": "array",
+      "description": "Compliance constraints. Empty array when no compliance packs are active (e.g. DPDPA disabled).",
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "requirement", "source"],
+        "properties": {
+          "rule_id":     { "type": "string" },
+          "requirement": { "type": "string" },
+          "source":      { "type": "string" }
+        }
+      }
+    },
+    "design_constraints": {
+      "type": "array",
+      "description": "Strict design constraints or user-approved overrides (anti-patterns that were accepted with documented risk).",
+      "items": { "type": "string" }
+    },
+    "anti_patterns": {
+      "type": "array",
+      "description": "Practices that MUST NOT appear in implementation.",
+      "items": { "type": "string" }
+    },
+    "required_controls": {
+      "type": "array",
+      "description": "High-level security controls required (e.g. MFA, AES-256-GCM encryption, rate limiting).",
+      "items": { "type": "string" }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "description": "Testable criteria for feature security acceptance.",
+      "minItems": 1,
+      "items": { "type": "string" }
     }
-  ],
-  "security_requirements": [
-    {
-      "rule_id": "Exact Rule ID (e.g., OWASP-A01-001).",
-      "requirement": "Specific security constraint to enforce.",
-      "source": "Source rule file.",
-      "validation": "How to validate the requirement."
-    }
-  ],
-  "compliance_requirements": [
-    {
-      "rule_id": "Exact Rule ID (e.g., DPDP-001).",
-      "requirement": "Specific compliance constraint.",
-      "source": "Source compliance file."
-    }
-  ],
-  "design_constraints": [
-    "List of strict design constraints or user-approved overrides."
-  ],
-  "anti_patterns": [
-    "List of practices that must be avoided in implementation."
-  ],
-  "required_controls": [
-    "List of necessary security controls (e.g., MFA, Encryption)."
-  ],
-  "acceptance_criteria": [
-    "List of testable criteria for feature acceptance."
-  ]
+  },
+  "additionalProperties": false
 }

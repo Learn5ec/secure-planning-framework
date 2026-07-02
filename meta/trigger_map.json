@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Keyword bootstrap map. Stage 1 of the hybrid activation model (see core/semantic_activation.md). Maps trigger keywords to activation targets. Semantic refinement may add targets not listed here.",
   "domains": {
     "web": [
@@ -76,23 +76,8 @@
     ]
   },
   "compliance": {
-    "dpdp": [
-      "personal data",
-      "pii",
-      "consent",
-      "aadhaar",
-      "pan",
-      "email",
-      "phone",
-      "address",
-      "kyc",
-      "user profile",
-      "data retention",
-      "data subject",
-      "data principal",
-      "data fiduciary",
-      "breach"
-    ]
+    "_disabled": "All compliance triggers disabled. DPDPA pending org decision.",
+    "dpdp": []
   },
   "cwe_categories": {
     "access_control": [

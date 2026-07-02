@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Severity model used for risk_classification and per-rule severity. Maps each level to its meaning, response expectation, and a CVSS band for alignment.",
   "levels": {
     "INFO": {
@@ -42,6 +42,6 @@
     "Any handling of credentials, financial, health, or biometric data => minimum HIGH baseline.",
     "Admin or impersonation capability => minimum HIGH baseline.",
     "Public, unauthenticated exposure of sensitive data => CRITICAL.",
-    "Regulatory (DPDP) violation potential => never below HIGH."
+    "Regulatory (DPDP) violation potential => never below HIGH. [DISABLED — DPDPA not enforced; remove this note when re-enabled]"
   ]
 }

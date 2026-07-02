@@ -6,6 +6,8 @@
 
 > These rules apply when designing, building, or consuming MCP servers. Two perspectives are covered: **Server Developer** and **Client Consumer**.
 
+> NOTE: These are ELEVATED and HIGH-ASSURANCE rules.
+
 ---
 
 # Rule ID: MCP-001
@@ -210,33 +212,3 @@ When acting as an MCP Client consuming third-party MCP servers, enforce trust mi
 
 ### Applies When
 - An agent or application acts as an MCP Client connecting to any third-party MCP Server.
-
----
-
-# MCP Security Minimum Bar (Review Checklist)
-*From: A Practical Guide for Secure MCP Server Development*
-
-**1. Strong Identity, Auth & Policy Enforcement**
-- [ ] All remote MCP servers use OAuth 2.1/OIDC
-- [ ] Tokens are short-lived, scoped, validated on every call
-- [ ] No token passthrough; policy enforcement is centralized
-
-**2. Strict Isolation & Lifecycle Control**
-- [ ] Users, sessions, and execution contexts are fully isolated
-- [ ] No shared state for user data
-- [ ] Sessions have deterministic cleanup and enforced resource quotas
-
-**3. Trusted, Controlled Tooling**
-- [ ] Tools are cryptographically signed, version-pinned, and formally approved
-- [ ] Tool descriptions are validated against runtime behavior
-- [ ] Only minimal, necessary tool fields are exposed to the model
-
-**4. Schema-Driven Validation Everywhere**
-- [ ] All MCP messages, tool inputs, and outputs are schema-validated
-- [ ] Inputs/outputs are sanitized, size-limited, and treated as untrusted
-- [ ] Structured (JSON) tool invocation is required
-
-**5. Hardened Deployment & Continuous Oversight**
-- [ ] Server runs containerized, non-root, network-restricted
-- [ ] Secrets are stored in vaults and never exposed to the LLM
-- [ ] CI/CD security gates, audit logs, and continuous monitoring are mandatory

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Cross-cutting tag index. Maps security themes to the rule IDs that address them across all packs, enabling theme-based retrieval that complements meta/rule_index.json (which is organized by category).",
   "tags": {
     "access_control": [

@@ -15,9 +15,16 @@
 The app securely stores sensitive data (PII, cryptographic material, secrets, API keys) ensuring it is properly protected, regardless of the target location (private internal storage or public folders).
 - **Android:** Do not use `SharedPreferences` for sensitive data without encryption (use `EncryptedSharedPreferences`). Do not hardcode secrets. Ensure Realm/SQLite databases containing sensitive info are encrypted.
 - **iOS:** Use the iOS Keychain for small secrets. Use Data Protection API (`NSFileProtectionComplete`) for files.
+- **Flutter:** Use `flutter_secure_storage`.
 
 ### Applies When
 - The app stores data locally on the device.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -27,12 +34,18 @@ The app securely stores sensitive data (PII, cryptographic material, secrets, AP
 
 ### Rule
 The app prevents unintentional leakage of sensitive data to publicly accessible locations via system capabilities such as backups, clipboards, or logs.
-- **Backups:** Exclude sensitive data from backups (`backup_rules.xml` on Android, explicitly excluding files on iOS).
+- **Backups:** Exclude sensitive data from backups (`backup_rules.xml`, `dataExtractionRules`, or `android:allowBackup="false"` on Android; explicitly excluding files on iOS).
 - **Logs:** Remove all logging of sensitive data in production builds. Redact sensitive data if logging is required. Avoid implicit string building in logs (`Log.v("key " + key)`).
 - **Clipboard:** Clear the clipboard when the app is backgrounded if sensitive data was copied.
 
 ### Applies When
 - App state is saved, backed up, logged, or sensitive data is copied.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -42,12 +55,18 @@ The app prevents unintentional leakage of sensitive data to publicly accessible 
 
 ### Rule
 The app employs current strong cryptography according to industry best practices (e.g., NIST standards) for any sensitive data encrypted in transit or at rest.
-- Replace insecure encryption modes (like ECB or CBC with improper padding) with secure authenticated modes like AES-GCM or AES-CCM.
+- Avoid ECB entirely. Prefer AES-GCM/AES-CCM; if CBC unavoidable, use random IVs + encrypt-then-MAC.
 - Do not use custom cryptographic algorithms.
 - Use strong, cryptographically secure pseudorandom number generators (CSPRNGs) with sufficient entropy.
 
 ### Applies When
 - The app encrypts data.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -64,6 +83,12 @@ The app performs key management securely throughout the lifecycle (generation, s
 ### Applies When
 - Cryptographic keys are generated or stored on the device.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-AUTH-1
@@ -78,6 +103,12 @@ The app uses secure authentication and authorization protocols to communicate wi
 
 ### Applies When
 - The app connects to a remote backend service.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -94,6 +125,12 @@ The app performs local authentication securely according to the platform best pr
 ### Applies When
 - Biometrics, PINs, or local authentication are used to unlock the app or access features.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-AUTH-3
@@ -107,6 +144,12 @@ The app secures sensitive operations with additional authentication.
 ### Applies When
 - Highly sensitive operations are executed.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-NETWORK-1
@@ -118,10 +161,17 @@ The app secures all network traffic according to the current best practices.
 - Enforce TLS (Transport Layer Security) for all communications. Do not allow cleartext HTTP traffic.
 - **Android:** Use Network Security Configuration to enforce HTTPS.
 - **iOS:** Ensure App Transport Security (ATS) is enabled and `NSAllowsArbitraryLoads` is NOT set to true globally without strict justification.
+- **Flutter:** Enforce certificate pinning via `http` client configuration.
 - Properly validate server certificates; do not ignore TLS errors or use insecure TLS configurations.
 
 ### Applies When
 - The app communicates over the network.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -137,6 +187,12 @@ The app performs identity pinning for all remote endpoints under the developer's
 ### Applies When
 - The app handles highly sensitive data and communicates with known backends.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-PLATFORM-1
@@ -147,9 +203,17 @@ The app performs identity pinning for all remote endpoints under the developer's
 The app uses IPC mechanisms securely.
 - **Android:** Secure Intents, Broadcast Receivers, Content Providers, and Services. Explicitly set `android:exported="false"` unless external access is required. Validate incoming intents and data.
 - **iOS:** Secure custom URL schemes and Universal Links. Validate data received via IPC.
+- **Verification:** Implement App Links (Android) with `android:autoVerify` and `assetlinks.json`, and Universal Links (iOS) with AASA files to prevent deep link hijacking.
+- **Flutter:** Validate and authorize platform-channel messages.
 
 ### Applies When
 - The app exposes activities, intents, deep links, or IPC components.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -166,6 +230,12 @@ The app uses WebViews securely.
 ### Applies When
 - WebViews are used within the app.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-PLATFORM-3
@@ -180,6 +250,12 @@ The app uses the user interface securely.
 ### Applies When
 - The app displays highly sensitive information on screen.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-CODE-1
@@ -188,10 +264,16 @@ The app uses the user interface securely.
 
 ### Rule
 The app requires an up-to-date platform version.
-- Set a minimum SDK/OS version that still receives security patches. Supporting very old versions exposes users to well-known OS-level vulnerabilities.
+- Set a minimum SDK/OS version (minSdk >= 29 / Android 10 required) that still receives security patches. Note: cleartext blocked by default from API 28+; Network Security Config from API 24+.
 
 ### Applies When
 - Defining the target deployment platforms for the app.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -205,6 +287,12 @@ The app has a mechanism for enforcing app updates.
 
 ### Applies When
 - Designing the app lifecycle and backend API versioning strategy.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -220,6 +308,12 @@ The app only uses software components without known vulnerabilities.
 ### Applies When
 - Integrating external libraries, SDKs, or open-source components.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-CODE-4
@@ -234,6 +328,12 @@ The app validates and sanitizes all untrusted inputs.
 ### Applies When
 - The app accepts external, untrusted, or user-provided input.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-RESILIENCE-1
@@ -246,7 +346,13 @@ The app validates the integrity of the platform.
 - Respond appropriately (e.g., warn the user, block access, or wipe sensitive data) based on the app's risk profile.
 
 ### Applies When
-- The app executes in high-risk environments handling highly sensitive data.
+- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -260,7 +366,13 @@ The app implements anti-tampering mechanisms.
 - Verify the integrity of the app's code and resources at runtime to prevent unauthorized modifications or repackaging.
 
 ### Applies When
-- Operating in a hostile environment or protecting intellectual property.
+- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -272,9 +384,16 @@ The app implements anti-tampering mechanisms.
 The app implements anti-static analysis mechanisms.
 - Use code obfuscation, string encryption, and control flow obfuscation to make reverse engineering difficult.
 - Use tools like ProGuard/R8 (Android) and ensure debug symbols are stripped.
+- **Flutter:** Use `--obfuscate --split-debug-info` for Dart code.
 
 ### Applies When
-- Protecting intellectual property, proprietary algorithms, or slowing down attackers analyzing the app.
+- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -288,7 +407,13 @@ The app implements anti-dynamic analysis techniques.
 - Terminate or alter behavior if dynamic analysis is detected.
 
 ### Applies When
-- Operating in a hostile environment handling highly sensitive data or transactions.
+- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -301,9 +426,16 @@ The app minimizes access to sensitive data and resources.
 - Request only the permissions absolutely necessary for functionality.
 - Require informed user consent.
 - Enforce that third-party SDKs operate strictly on user consent and do not collect data by default.
+- Monitor and restrict third-party SDK network exfiltration behaviors.
 
 ### Applies When
 - The app requests device permissions, location, contacts, or collects user data.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
 
 ---
 
@@ -319,6 +451,12 @@ The app prevents identification of the user where possible.
 ### Applies When
 - Designing telemetry, analytics, and tracking features.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-PRIVACY-3
@@ -333,6 +471,12 @@ The app is transparent about data collection and usage.
 ### Applies When
 - Planning the app's privacy policy and App Store/Play Store privacy labels.
 
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+
 ---
 
 # Rule ID: MASVS-PRIVACY-4
@@ -346,3 +490,10 @@ The app offers user control over their data.
 
 ### Applies When
 - Designing account management and privacy settings workflows.
+
+### Validation
+- Standard testing procedures per MASTG
+
+### Failure Impact
+- Security compromise related to this control
+

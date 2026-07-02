@@ -3,7 +3,7 @@
 ---
 
 ## CWE-840 — Business Logic Errors
-Mapped OWASP: A04  
+Mapped OWASP: A06  
 Enforcement:
 - Validate workflows  
 Validation:
@@ -12,7 +12,7 @@ Validation:
 ---
 
 ## CWE-841 — Improper Enforcement of Behavioral Workflow
-Mapped OWASP: A04  
+Mapped OWASP: A06  
 Enforcement:
 - Step validation  
 Validation:
@@ -21,7 +21,7 @@ Validation:
 ---
 
 ## CWE-362 — Race Condition
-Mapped OWASP: A04  
+Mapped OWASP: A06  
 Enforcement:
 - Locking mechanisms  
 Validation:

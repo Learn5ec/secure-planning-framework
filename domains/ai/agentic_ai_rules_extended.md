@@ -4,6 +4,8 @@
 
 > These rules apply when a feature involves AI agents, LLMs, autonomous orchestration, RAG, code-generation tools, or multi-agent systems.
 
+> NOTE: These are ELEVATED and HIGH-ASSURANCE rules.
+
 ---
 
 # Rule ID: ASI-01

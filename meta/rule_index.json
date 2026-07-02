@@ -1,11 +1,13 @@
 {
+  "_version": "2.0.0",
   "access_control": {
     "owasp": [
       "OWASP-A01-001",
       "OWASP-A01-002"
     ],
     "api": [
-      "API-001"
+      "API-001",
+      "API-005"
     ],
     "cwe": [
       "CWE-284",
@@ -46,7 +48,8 @@
       "CWE-384",
       "CWE-613",
       "CWE-640",
-      "CWE-798"
+      "CWE-798",
+      "CWE-306"
     ],
     "common": [
       "COM-010",
@@ -79,7 +82,9 @@
     "cwe": [
       "CWE-20",
       "CWE-116",
-      "CWE-129"
+      "CWE-129",
+      "CWE-190",
+      "CWE-400"
     ],
     "common": [
       "COM-008",
@@ -200,7 +205,8 @@
     "cwe": [
       "CWE-16",
       "CWE-209",
-      "CWE-276"
+      "CWE-276",
+      "CWE-611"
     ],
     "common": [
       "COM-003",
@@ -243,7 +249,8 @@
       "OWASP-A06-001"
     ],
     "api": [
-      "API-005"
+      "API-005",
+      "API-006"
     ],
     "ai": [
       "ASI-02",
@@ -281,7 +288,10 @@
       "API-001",
       "API-003",
       "API-004",
+      "API-006",
       "API-007",
+      "API-008",
+      "API-009",
       "API-010"
     ],
     "cwe": [
@@ -319,6 +329,13 @@
     ]
   },
   "supply_chain": {
+    "owasp": [
+      "OWASP-A03-001",
+      "OWASP-A08-001"
+    ],
+    "api": [
+      "API-009"
+    ],
     "ai": [
       "ASI-04",
       "LLM-GOV-002",
@@ -418,37 +435,17 @@
     ]
   },
   "compliance_dpdp": {
+    "_disabled": true,
+    "_reason": "DPDPA disabled pending org-wide implementation decision. Do not load these rules.",
     "dpdp_core": [
-      "DPDP-001",
-      "DPDP-002",
-      "DPDP-003",
-      "DPDP-004",
-      "DPDP-005",
-      "DPDP-006",
-      "DPDP-007",
-      "DPDP-008",
-      "DPDP-009",
-      "DPDP-010",
-      "DPDP-011"
+      "DPDP-001", "DPDP-002", "DPDP-003", "DPDP-004", "DPDP-005",
+      "DPDP-006", "DPDP-007", "DPDP-008", "DPDP-009", "DPDP-010", "DPDP-011"
     ],
     "dpdp_extended": [
-      "DPDP-012",
-      "DPDP-013",
-      "DPDP-014",
-      "DPDP-015",
-      "DPDP-016",
-      "DPDP-017",
-      "DPDP-018",
-      "DPDP-019",
-      "DPDP-020",
-      "DPDP-021",
-      "DPDP-022",
-      "DPDP-023",
-      "DPDP-024",
-      "DPDP-025",
-      "DPDP-026",
-      "DPDP-027",
-      "DPDP-028"
+      "DPDP-012", "DPDP-013", "DPDP-014", "DPDP-015", "DPDP-016",
+      "DPDP-017", "DPDP-018", "DPDP-019", "DPDP-020", "DPDP-021",
+      "DPDP-022", "DPDP-023", "DPDP-024", "DPDP-025", "DPDP-026",
+      "DPDP-027", "DPDP-028"
     ]
   }
 }

@@ -10,6 +10,8 @@ rules below. Conflicts are never resolved by picking the weaker option.
 When rules conflict, apply the control that **reduces risk the most**, even if it
 is more expensive or more inconvenient. Security defaults to the stricter side.
 
+> **Availability Escape Hatch:** Most restrictive applies to controls that reduce risk WITHOUT trading off availability. Availability-affecting controls (lockout, rate limits, session lifetimes) pick the strictest value that does not create a self-DoS.
+
 Examples:
 - Rule A: "session expires in 24h", Rule B: "session expires in 30m" → **30m**.
 - Rule A: "encrypt at rest recommended", Rule B: "encrypt at rest required" → **required**.

@@ -4,6 +4,8 @@
 
 > These rules apply when a feature builds on, integrates, or deploys a Large Language Model (LLM) or AI/ML system, whether custom-built or third-party (e.g., OpenAI, Anthropic, Google Gemini, open-source models).
 
+> NOTE: These are ELEVATED and HIGH-ASSURANCE rules.
+
 ---
 
 # Rule ID: LLM-GOV-001

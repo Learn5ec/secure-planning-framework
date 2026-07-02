@@ -30,8 +30,11 @@
 | API2 | Broken Authentication | Secure tokens, MFA, brute-force protection | API-002 |
 | API3 | Broken Object Property Level Authz | Restrict fields; never over-expose | API-003 |
 | API4 | Unrestricted Resource Consumption | Rate limits, quotas, payload caps | API-004 |
-| API5 | Broken Function Level Authz / BFLA | Enforce function-level authz | API-005 (logic abuse) |
+| API5 | Broken Function Level Authz (BFLA) | Enforce role/permission on every endpoint | API-005 |
+| API6 | Unrestricted Access to Sensitive Business Flows | Bot/abuse protection on high-value flows | API-006 |
 | API7 | SSRF | Validate & allowlist outbound URLs | API-007 |
+| API8 | Security Misconfiguration | Harden config, disable debug, restrict methods | API-008 |
+| API9 | Improper Inventory Management | Inventory all versions; retire deprecated endpoints | API-009 |
 | API10 | Unsafe Consumption of APIs | Treat 3rd-party responses as untrusted | API-010 |
 
 ---
@@ -46,4 +49,4 @@
 ## Cross-references
 - Common baseline: `common/common-considerations.md` (always applied).
 - CWE depth: `cwe/<category>/`.
-- Compliance: `compliance/dpdp/` when personal data is involved.
+- Compliance: DPDPA is currently disabled pending org decision; do not reference `compliance/dpdp/`.

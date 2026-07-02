@@ -3,7 +3,7 @@
 ---
 
 ## CWE-16 — Configuration
-Mapped OWASP: A05  
+Mapped OWASP: A02  
 Enforcement:
 - Secure configurations  
 Validation:
@@ -21,7 +21,7 @@ Validation:
 ---
 
 ## CWE-611 — XML External Entity (XXE)
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Disable external entities  
 Validation:

@@ -30,7 +30,7 @@ Validation:
 ---
 
 ## CWE-798 — Hardcoded Credentials
-Mapped OWASP: A02  
+Mapped OWASP: A04  
 Enforcement:
 - No hardcoded secrets  
 Validation:

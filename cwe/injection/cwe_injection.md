@@ -3,7 +3,7 @@
 ---
 
 ## CWE-79 — Cross-Site Scripting (XSS)
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Output encoding
 - Input sanitization  
@@ -13,7 +13,7 @@ Validation:
 ---
 
 ## CWE-89 — SQL Injection
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Parameterized queries  
 Validation:
@@ -22,7 +22,7 @@ Validation:
 ---
 
 ## CWE-77 — Command Injection
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Avoid shell execution  
 Validation:
@@ -31,7 +31,7 @@ Validation:
 ---
 
 ## CWE-78 — OS Command Injection
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Strict input validation  
 Validation:
@@ -40,7 +40,7 @@ Validation:
 ---
 
 ## CWE-94 — Code Injection
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Avoid dynamic execution  
 Validation:

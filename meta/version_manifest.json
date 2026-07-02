@@ -1,10 +1,10 @@
 {
   "framework": {
     "name": "secure-planning-framework",
-    "version": "0.5.0",
+    "version": "2.0.0",
     "status": "in-development",
-    "schema_version": "1.0.0",
-    "description": "Modular secure planning orchestration skill. Converts feature ideas into enforceable security/privacy/compliance blueprints during the planning phase."
+    "schema_version": "2.0.0",
+    "description": "Modular secure planning orchestration skill. Always-on: fires by default on every planning/development task; opt-out via explicit phrase. Converts feature ideas into enforceable security blueprints."
   },
   "compatibility": {
     "claude_code": "SKILL.md frontmatter (name + description) at repo root",
@@ -59,7 +59,9 @@
         "compliance/dpdp/dpdpa-compliance.md"
       ],
       "version": "2023",
-      "rule_prefix": "DPDP-"
+      "rule_prefix": "DPDP-",
+      "_disabled": true,
+      "_reason": "DPDPA disabled pending org-wide implementation decision."
     },
     "common_baseline": {
       "source": "Internal secure engineering baseline",
@@ -75,7 +77,9 @@
     }
   },
   "planned_compliance": [
+    "DPDPA (re-enable when org decision made)",
     "GDPR",
+    "EU_AI_Act",
     "HIPAA",
     "PCI_DSS",
     "SOC2",

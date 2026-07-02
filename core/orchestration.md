@@ -10,7 +10,7 @@ entrypoint, this file is the procedure.
 
 ```
 prompt
-  → 0. Activation Gate            (planning-only + trigger phrase; else ABORT)
+  → 0. Opt-Out Check               (ABORT only if user says "Do not use SPF skill")
   → 1. Context Inference
   → 2. Semantic Activation        (see core/semantic_activation.md)
   → 3. Dynamic Rule Retrieval     (read only activated files)
@@ -23,15 +23,14 @@ prompt
 
 ---
 
-## 0. Activation Gate (run first)
-This skill is **planning-only and generic** (not industry-specific). Engage ONLY
-when **both** hold: (a) a feature/system is being **planned/designed before
-implementation**, and (b) the request contains a **security-planning trigger
-phrase** (or close paraphrase) per `skill_activation_gate` in
-`core/activation_logic.json`. The skill MUST NOT run during code writing,
-debugging, refactoring, or UI/UX-only work. If the gate does not pass, stay
-dormant — read nothing further and produce no blueprint. (See Stage 0 in
-`core/semantic_activation.md`.)
+## 0. Opt-Out Check (run first)
+This skill is **always-on** — it fires by default on every planning and
+development task. The **only** reason to abort is an explicit opt-out from the
+user. If the request contains any of the following phrases (or a close
+equivalent), stay dormant — read nothing further and produce no blueprint:
+- `"do not use spf skill"` / `"skip spf"` / `"no secure planning"` / `"spf off"`
+
+For all other requests, proceed immediately to step 1.
 
 ## 1. Context Inference
 Extract from the request, without inventing facts:

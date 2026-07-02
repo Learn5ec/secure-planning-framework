@@ -6,10 +6,11 @@
 ## Title: Prevent Storage of Sensitive Data in Local Storage
 
 **Category:** Client-Side Security  
+**Severity:** CRITICAL
 
 ### Rule
-Authentication tokens and sensitive user data MUST NOT be stored in browser localStorage or sessionStorage. They MUST be stored only in cookies configured per COM-002 (Secure, HttpOnly, SameSite, scoped domain).
-**NON-NEGOTIABLE: this control is not subject to user override.**
+Authentication tokens and sensitive user data MUST NOT be stored in browser localStorage or sessionStorage. On web: use HttpOnly, Secure, SameSite cookies. On mobile: use platform secure storage (Keystore/Keychain). In-memory (non-persisted) access tokens are an allowed alternative.
+**NON-NEGOTIABLE: the localStorage ban is not subject to user override.**
 
 ### Applies When
 - Web applications using browser storage
@@ -27,6 +28,7 @@ Authentication tokens and sensitive user data MUST NOT be stored in browser loca
 ## Title: Enforce Secure Cookie Attributes
 
 **Category:** Session Security  
+**Severity:** CRITICAL
 
 ### Rule
 All cookies carrying authentication/session/sensitive data MUST:
@@ -99,13 +101,13 @@ Server and X-Powered-By headers MUST be removed or obfuscated.
 **Category:** Request Security  
 
 ### Rule
-All state-changing requests MUST include CSRF protection mechanisms.
+All state-changing requests (POST/PUT/PATCH/DELETE) in cookie-based or ambient-credential flows MUST include CSRF protection mechanisms. Acceptable defenses include Synchronizer Token Pattern, Double-Submit Cookie, or strictly enforcing `SameSite` (Lax/Strict) combined with `Origin`/`Referer` validation. Pure Bearer-token APIs without ambient credentials are exempt from CSRF requirements but must enforce strict CORS.
 
 ### Applies When
-- POST/PUT/PATCH/DELETE endpoints
+- POST/PUT/PATCH/DELETE endpoints using cookies or ambient auth
 
 ### Validation
-- Attempt request without token
+- Attempt request without token or across origins
 
 ### Failure Impact
 - Unauthorized actions
@@ -118,13 +120,13 @@ All state-changing requests MUST include CSRF protection mechanisms.
 **Category:** API Security  
 
 ### Rule
-Access-Control-Allow-Origin MUST NOT be set to "*" for sensitive endpoints.
+Cross-Origin Resource Sharing (CORS) MUST be restricted using an explicit, server-side allowlist of trusted domains. `Access-Control-Allow-Origin` MUST NOT be set to `*` for authenticated or sensitive endpoints. The combination of `Access-Control-Allow-Credentials: true` with a wildcard (`*`), a dynamically reflected `Origin`, or a `null` origin is strictly PROHIBITED.
 
 ### Applies When
 - APIs with cross-origin access
 
 ### Validation
-- Inspect response headers
+- Inspect response headers for explicit allowlisted origin
 
 ### Failure Impact
 - Cross-origin data theft
@@ -151,19 +153,18 @@ Application MUST NOT be accessible via direct public IP if WAF/CDN is configured
 ---
 
 # Rule ID: COM-008
-## Title: Enforce Strict Input Validation
+## Title: Enforce Strict Input Validation (Superseded)
 
 **Category:** Input Validation  
 
 ### Rule
-All inputs MUST follow strict validation rules based on expected data type and length.
+*This rule has been superseded.* Please refer to the canonical input validation trio: **COM-034** (Type & Format Validation), **COM-035** (Length & Bounds), and **COM-036** (Business Logic Validation).
 
 ### Applies When
 - Any user input field
 
 ### Validation
-- Inject invalid characters
-- Test boundary values
+- See COM-034, COM-035, COM-036
 
 ### Failure Impact
 - Injection, data corruption
@@ -190,21 +191,18 @@ Uploaded documents containing sensitive data MUST have time-bound access and MUS
 ---
 
 # Rule ID: COM-010
-## Title: Enforce Token Expiry and Invalidation
+## Title: Enforce Token Expiry and Invalidation (Superseded)
 
 **Category:** Session Management  
 
 ### Rule
-Session/Auth tokens MUST expire and MUST be invalidated on:
-- Logout
-- Password change
-- Admin reset
+*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
 
 ### Applies When
-- Authentication systems
+- Token-based auth
 
 ### Validation
-- Attempt reuse after logout/change
+- See COM-039
 
 ### Failure Impact
 - Session hijacking
@@ -288,18 +286,18 @@ MFA and CAPTCHA MUST be implemented for sensitive applications unless explicitly
 ---
 
 # Rule ID: COM-015
-## Title: Prevent Long-Lived Tokens
+## Title: Prevent Long-Lived Tokens (Superseded)
 
 **Category:** Session Security  
 
 ### Rule
-Session and refresh tokens MUST have short lifetimes.
+*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
 
 ### Applies When
 - Token-based auth
 
 ### Validation
-- Inspect expiry times
+- See COM-039
 
 ### Failure Impact
 - Persistent compromise
@@ -312,16 +310,13 @@ Session and refresh tokens MUST have short lifetimes.
 **Category:** API Security  
 
 ### Rule
-Rate limits MUST vary:
-- Strict for unauthenticated
-- Strict for payment/AI endpoints
-- Moderate for others
+Rate limits MUST vary based on endpoint sensitivity and authentication state. Concrete defaults MUST be enforced (e.g., Unauthenticated APIs: ≤100 req/min; Sensitive/Payment/AI/Login endpoints: ≤5-10 req/min per IP/user; Standard authenticated APIs: ≤1000 req/min). A hook or configuration MUST exist to override these defaults based on tenant tier or threat level.
 
 ### Applies When
-- Public APIs
+- Public and authenticated APIs
 
 ### Validation
-- Load testing
+- Load testing against limits
 
 ### Failure Impact
 - Abuse, DoS
@@ -377,13 +372,13 @@ File uploads MUST:
 **Category:** Authentication  
 
 ### Rule
-Strong password policies MUST be enforced unless explicitly overridden.
+Strong password policies aligned with NIST SP 800-63B MUST be enforced: require a minimum of 12 characters or allow passphrases; block passwords found in known breach databases; allow all printable ASCII characters (including spaces); and do NOT enforce arbitrary periodic password rotation unless compromised.
 
 ### Applies When
-- User authentication
+- User authentication and registration
 
 ### Validation
-- Attempt weak passwords
+- Attempt weak, short, or breached passwords
 
 ### Failure Impact
 - Account compromise
@@ -429,21 +424,21 @@ Authorization MUST NOT rely on flags like isAdmin or isLoggedIn.
 ---
 
 # Rule ID: COM-022
-## Title: Enforce Session Invalidation on Logout
+## Title: Prevent Session Fixation (Superseded)
 
-**Category:** Session Security  
+**Category:** Session Management  
 
 ### Rule
-Session MUST be invalidated and inaccessible after logout, including browser back navigation.
+*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
 
 ### Applies When
-- Web apps
+- Session creation
 
 ### Validation
-- Use back button after logout
+- See COM-039
 
 ### Failure Impact
-- Session reuse
+- Session fixation
 
 ---
 
@@ -486,21 +481,21 @@ Backend MUST reject additional unexpected parameters in requests.
 ---
 
 # Rule ID: COM-025
-## Title: Prevent Token Leakage via URL
+## Title: Validate JWT Claims (Superseded)
 
-**Category:** Session Security  
+**Category:** Authentication  
 
 ### Rule
-Authentication tokens MUST NOT be passed in URL parameters.
+*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039** and **COM-040**.
 
 ### Applies When
-- Auth flows
+- JWT validation
 
 ### Validation
-- Inspect network requests
+- See COM-039, COM-040
 
 ### Failure Impact
-- Token leakage
+- Authentication bypass
 
 ---
 
@@ -622,6 +617,7 @@ System MUST NOT expose internal errors or stack traces to users.
 ## Title: Enforce Encryption at Rest
 
 **Category:** Cryptography / Data Protection  
+**Severity:** CRITICAL
 
 ### Rule
 All sensitive data that must be recoverable (PII, financial, and health data) MUST be encrypted at rest using strong, modern, industry-standard algorithms (e.g., AES-256-GCM) with properly managed keys. Sensitive data MUST NOT be persisted in plaintext anywhere, including databases, files, caches, logs, and backups.
@@ -642,13 +638,14 @@ Passwords and secret authentication verifiers are an exception: they MUST NOT be
 ---
 
 # Rule ID: COM-033
-## Title: Enforce Encryption in Transit (TLS 1.3 + Strict HTTPS)
+## Title: Enforce Encryption in Transit (TLS 1.2+ & Strict HTTPS)
 
 **Category:** Network Security / Cryptography  
+**Severity:** CRITICAL
 
 ### Rule
-All data in transit MUST be encrypted using TLS 1.3 with strong cipher suites. HTTPS MUST be strictly enforced for all traffic — plain HTTP MUST be rejected or redirected to HTTPS, and legacy/insecure protocols (SSL, TLS ≤ 1.2) and downgrade attempts MUST be disabled. HSTS MUST be enabled (see COM-003).
-**NON-NEGOTIABLE: this control is not subject to user override.**
+All data in transit MUST be encrypted using a minimum of TLS 1.2 (TLS 1.3 preferred) with strong cipher suites. HTTPS MUST be strictly enforced for all traffic — plain HTTP MUST be rejected or redirected to HTTPS, and legacy/insecure protocols (SSL, TLS ≤ 1.1) and downgrade attempts MUST be disabled. HSTS MUST be enabled (see COM-003).
+**NON-NEGOTIABLE: the TLS 1.2 minimum floor is not subject to user override.**
 
 ### Applies When
 - Any network communication (web, API, mobile, service-to-service, third-party calls)
@@ -715,10 +712,11 @@ All dynamic data rendered into an output context MUST be encoded/escaped for tha
 ## Title: Layered Validation & Sanitization (Defense in Depth)
 
 **Category:** Input Validation / Architecture  
+**Severity:** CRITICAL
 
 ### Rule
-Input validation, sanitization, and output encoding MUST be applied at **every** layer present in the system — frontend, mobile, and backend. It MUST NEVER be implemented in only one layer. **Server-side (backend) validation is authoritative and MUST NEVER be omitted or weakened**; frontend and mobile validation are additional defense-in-depth and UX layers, never a substitute for server-side enforcement.
-**NON-NEGOTIABLE: server-side validation MUST always be present; client-only validation is prohibited and not subject to user override.**
+Input validation, sanitization, and output encoding MUST be applied at **every** layer present in the system — frontend, mobile, and backend. It MUST NEVER be implemented in only one layer. **Server-side (backend) validation is authoritative and MUST NEVER be omitted or weakened**; frontend and mobile validation are additional defense-in-depth and UX layers. For offline-first/local-only mobile apps, on-device validation (with MASVS-RESILIENCE and MASVS-STORAGE) is authoritative, but any results later synced to a backend MUST be re-validated server-side.
+**NON-NEGOTIABLE: server-side validation (when a backend exists) MUST always be present; client-only validation is prohibited and not subject to user override.**
 
 ### Applies When
 - Any system with more than one tier (web FE / mobile / API / backend)
@@ -762,6 +760,7 @@ File uploads MUST be hardened beyond extension/size checks (see COM-017, COM-018
 ## Title: Password & Secret Storage (Hash, Never Encrypt)
 
 **Category:** Cryptography / Authentication  
+**Severity:** CRITICAL
 
 ### Rule
 Passwords and other secret authentication verifiers MUST be stored as salted, one-way hashes using a strong, memory-hard adaptive algorithm — **Argon2id preferred** (bcrypt or scrypt acceptable) — with a per-credential random salt and appropriate cost parameters. Passwords MUST NEVER be stored in plaintext or with reversible encryption.
@@ -807,6 +806,7 @@ Authentication tokens and sessions MUST be invalidated server-side immediately u
 ## Title: JWT / Bearer Token Validation Hardening
 
 **Category:** Authentication / Access Control  
+**Severity:** CRITICAL
 
 ### Rule
 Every JWT/bearer token MUST be cryptographically verified server-side: signature validated against a trusted key, algorithm pinned to a strong algorithm, and `alg: none` plus algorithm-confusion attacks (e.g., RS256→HS256) rejected. The server MUST enforce `exp`, `iss`, and `aud`. Session/identifier tokens MUST be high-entropy, random, and unpredictable — they MUST NOT be sequential, guessable, or derived from user data (username, email, id). Authorization decisions MUST rely on server-validated claims only, never on unverified or client-decoded token contents.
@@ -888,6 +888,7 @@ Authentication and other sensitive/critical endpoints MUST enforce progressive a
 ## Title: Minimize Sensitive Data in API Responses
 
 **Category:** Data Protection / API Security  
+**Severity:** CRITICAL
 
 ### Rule
 API responses MUST return only the fields required for the use case (least exposure). They MUST NEVER include secrets or security-internal values — passwords, password hashes, OTPs, reset/verification tokens, API keys, session secrets — nor other users' PII, nor internal control/authorization flags (e.g., `isAdmin`, `isApproved`, `role`). Authorization and state fields MUST be derived and enforced server-side and MUST NOT be trusted if echoed by the client (see COM-024).
@@ -909,6 +910,7 @@ API responses MUST return only the fields required for the use case (least expos
 ## Title: Server-Side Enforcement of Access-State Changes
 
 **Category:** Access Control  
+**Severity:** CRITICAL
 
 ### Rule
 Revocation, suspension, role downgrade, plan/entitlement change, and account/data deletion MUST take effect immediately and authoritatively on the backend for ALL access paths (web, mobile, direct API). Cached permissions, already-issued tokens, and background/batch jobs MUST honor the new state (see COM-039). After deletion, the data principal's data MUST be erased or anonymized per retention policy and MUST NOT remain retrievable.
@@ -998,7 +1000,7 @@ One-time passwords/codes MUST be generated server-side with sufficient entropy, 
 All dependencies, libraries, frameworks, runtimes, and server software MUST be tracked (SBOM) and continuously scanned (SCA) for known vulnerabilities. Known-vulnerable or end-of-life components — e.g., outdated JS frameworks (Next.js/Vue.js), unpatched Nginx/SSH/OS, EOL language runtimes, or low/EOL mobile minSDK targets — MUST be patched or replaced before release. A defined patching/update cadence MUST exist for production systems.
 
 ### Applies When
-- Any application or infrastructure using third-party or platform components
+- ONLY when adding, updating, or modifying project dependencies (package.json, requirements.txt, go.mod, build.gradle) or Dockerfiles.
 
 ### Validation
 - Run SCA / vulnerability scan — no known critical/high vulnerabilities in shipped components
@@ -1018,7 +1020,7 @@ All dependencies, libraries, frameworks, runtimes, and server software MUST be t
 Production deployments MUST NOT expose development/debug surfaces: interactive API docs (Swagger/OpenAPI UI), GraphQL introspection, debug endpoints, verbose stack traces (see COM-031), default/sample pages, or directory listings. API schemas/specs MUST NOT leak internal hostnames, ports, or environment details (e.g., `localhost:port`). Such surfaces MUST be disabled or restricted to trusted networks/identities.
 
 ### Applies When
-- Any production deployment exposing HTTP/API surfaces
+- ONLY when the feature explicitly sends transactional or notification emails.
 
 ### Validation
 - Request Swagger/OpenAPI UI or GraphQL introspection in production — MUST be unavailable/restricted
@@ -1033,6 +1035,7 @@ Production deployments MUST NOT expose development/debug surfaces: interactive A
 ## Title: Multi-Tenant / Data-Segregation Isolation
 
 **Category:** Access Control  
+**Severity:** CRITICAL
 
 ### Rule
 In multi-tenant, multi-branch, or multi-organization systems, every data access and mutation MUST be scoped server-side to the caller's tenant/branch/org context derived from the authenticated session — NEVER from a client-supplied tenant/branch identifier alone. Cross-tenant access MUST be denied by default and explicitly tested. Tokens/identifiers MUST NOT be reusable across tenant boundaries.
@@ -1105,5 +1108,88 @@ Security decisions (rate limiting, lockout, geofencing, audit attribution, autho
 
 ### Failure Impact
 - Rate-limit/lockout bypass, spoofed audit trails, abuse-control evasion
+
+---
+
+# Rule ID: COM-055
+## Title: Centralized Secrets Management / No Hardcoded Secrets
+
+**Category:** Configuration / Cryptography  
+**Severity:** HIGH
+
+### Rule
+API keys, database credentials, cryptographic keys, and third-party tokens MUST NOT be hardcoded in source code, committed to version control, embedded in client-side applications (mobile/web), or baked into container images. All secrets MUST be managed centrally using a dedicated secret vault or environment-injected secret manager.
+
+### Applies When
+- Any service, script, or application requiring credentials to access another service
+
+### Validation
+- Static code analysis (e.g., TruffleHog, GitLeaks) shows zero secrets in code
+- Secrets are dynamically retrieved at runtime or injected safely by the orchestrator
+
+### Failure Impact
+- Credential compromise, unauthorized access to adjacent systems
+
+---
+
+# Rule ID: COM-056
+## Title: Secure Logging Baseline
+
+**Category:** Logging & Alerting  
+**Severity:** HIGH
+
+### Rule
+The system MUST log critical security events including authentication success/failures, authorization decisions (especially failures), and all administrative/privileged actions. The system MUST strictly PROHIBIT the logging of sensitive data including passwords, authentication tokens, session IDs, OTPs, full credit card numbers (PAN), and full PII/PHI.
+
+### Applies When
+- Implementing audit trails and application logs
+
+### Validation
+- Review logs for absence of sensitive data
+- Verify that security-relevant events generate logs with adequate context (timestamp, user ID, event type, success/failure)
+
+### Failure Impact
+- Data exposure through log files, lack of accountability during incident response
+
+---
+
+# Rule ID: COM-057
+## Title: Server-Side Request Forgery (SSRF) Prevention
+
+**Category:** Network Security / Architecture  
+**Severity:** HIGH
+
+### Rule
+Any feature that initiates outbound HTTP requests or network connections based on user input MUST strictly validate and restrict destinations. The system MUST enforce an allowlist of permitted domains/IPs, explicitly deny access to internal networks (RFC1918), link-local addresses, cloud metadata services (e.g., 169.254.169.254), and loopback. Redirect following MUST be disabled or strictly re-validated to prevent bypasses.
+
+### Applies When
+- Webhooks, URL fetching, proxying requests, PDF generation from URLs
+
+### Validation
+- Attempt to fetch internal resources (e.g., `http://127.0.0.1` or `http://169.254.169.254`) — requests must fail
+
+### Failure Impact
+- Internal network enumeration, cloud credential theft, unauthorized access to internal APIs
+
+---
+
+# Rule ID: COM-058
+## Title: Prevent Insecure Deserialization
+
+**Category:** Input Validation / Architecture  
+**Severity:** HIGH
+
+### Rule
+The application MUST NOT deserialize untrusted data using unsafe deserialization formats or libraries that allow arbitrary object instantiation (e.g., Java native serialization, Python `pickle`, .NET `BinaryFormatter`, or YAML unsafe loads). Systems MUST use safe, data-only serialization formats like JSON or Protocol Buffers.
+
+### Applies When
+- Processing serialized data from APIs, queues, files, or cache
+
+### Validation
+- Ensure parsers are configured securely (e.g., `yaml.safe_load`)
+- Send manipulated serialized objects (if applicable) — must result in a safe rejection without executing code
+
+### Failure Impact
+- Remote Code Execution (RCE), Denial of Service (DoS)
 
 ---

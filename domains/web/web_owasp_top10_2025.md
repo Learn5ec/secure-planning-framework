@@ -23,7 +23,6 @@ All access control checks MUST be enforced on the server side and MUST NOT rely 
 ### Failure Impact
 - Unauthorized data access
 - Privilege escalation  
-:contentReference[oaicite:0]{index=0}
 
 ---
 
@@ -45,7 +44,6 @@ Access MUST be denied by default and granted only based on explicit role or owne
 
 ### Failure Impact
 - Full system compromise  
-:contentReference[oaicite:1]{index=1}
 
 ---
 
@@ -67,7 +65,6 @@ All environments MUST enforce hardened configurations with no default credential
 
 ### Failure Impact
 - System exposure  
-:contentReference[oaicite:2]{index=2}
 
 ---
 
@@ -89,7 +86,6 @@ All dependencies MUST be tracked, verified, and scanned for vulnerabilities befo
 
 ### Failure Impact
 - Remote code execution  
-:contentReference[oaicite:3]{index=3}
 
 ---
 
@@ -111,7 +107,6 @@ Sensitive data MUST be encrypted using strong, modern cryptographic algorithms b
 
 ### Failure Impact
 - Data exposure  
-:contentReference[oaicite:4]{index=4}
 
 ---
 
@@ -132,7 +127,6 @@ All user inputs MUST be validated, sanitized, and parameterized before being pro
 
 ### Failure Impact
 - Arbitrary code execution  
-:contentReference[oaicite:5]{index=5}
 
 ---
 
@@ -154,7 +148,6 @@ All critical application flows MUST undergo threat modeling and secure design va
 
 ### Failure Impact
 - Systemic vulnerabilities  
-:contentReference[oaicite:6]{index=6}
 
 ---
 
@@ -176,7 +169,6 @@ Authentication mechanisms MUST use industry standards and MUST enforce MFA where
 
 ### Failure Impact
 - Account takeover  
-:contentReference[oaicite:7]{index=7}
 
 ---
 
@@ -197,7 +189,6 @@ All software updates, data inputs, and code artifacts MUST be verified for integ
 
 ### Failure Impact
 - Supply chain compromise  
-:contentReference[oaicite:8]{index=8}
 
 ---
 
@@ -219,7 +210,6 @@ All critical events MUST be logged and MUST trigger alerts for suspicious activi
 
 ### Failure Impact
 - Undetected breaches  
-:contentReference[oaicite:9]{index=9}
 
 ---
 
@@ -240,6 +230,5 @@ All exceptions MUST be handled securely without exposing internal system details
 
 ### Failure Impact
 - Information disclosure  
-:contentReference[oaicite:10]{index=10}
 
 ---

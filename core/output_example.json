@@ -1,0 +1,59 @@
+{
+  "_comment": "This is a populated example of a valid SPF blueprint. The schema is enforced by core/output_schema.json.",
+  "feature_summary": "User login endpoint with email/password authentication and JWT issuance.",
+  "risk_classification": "HIGH",
+  "risk_reasoning": "Handles credentials (minimum HIGH per severity_map escalation), publicly exposed, token issuance creates lateral-movement risk if compromised.",
+  "data_sensitivity": ["credentials", "PII (email)"],
+  "actors": ["Anonymous user", "Registered user", "Admin"],
+  "assumptions": ["TLS terminated at load balancer", "Password hashing library chosen by implementer"],
+  "threat_model": [
+    {
+      "threat_id": "T-01",
+      "threat": "Credential brute-force or stuffing attack against the login endpoint.",
+      "attack_vector": "Attacker submits automated high-volume login attempts using breached credential lists.",
+      "impact": "Account takeover, session hijacking.",
+      "cia": { "confidentiality": "HIGH", "integrity": "MEDIUM", "availability": "LOW" }
+    },
+    {
+      "threat_id": "T-02",
+      "threat": "JWT algorithm confusion (alg:none or RS256→HS256 downgrade).",
+      "attack_vector": "Attacker forges a JWT by exploiting a permissive alg validation.",
+      "impact": "Authentication bypass, privilege escalation.",
+      "cia": { "confidentiality": "HIGH", "integrity": "HIGH", "availability": "NONE" }
+    }
+  ],
+  "security_requirements": [
+    {
+      "rule_id": "COM-038",
+      "requirement": "Passwords MUST be hashed with Argon2id (preferred), bcrypt, or scrypt — never encrypted or stored in plaintext.",
+      "source": "common/common-considerations.md",
+      "severity": "CRITICAL",
+      "cwe": ["CWE-916", "CWE-256"],
+      "threat_ref": "T-01",
+      "validation": "Confirm no plaintext passwords in DB; verify Argon2id parameters meet OWASP defaults."
+    },
+    {
+      "rule_id": "COM-040",
+      "requirement": "JWT signature MUST be verified server-side on every request; alg:none and algorithm-confusion attacks (RS256→HS256) MUST be rejected.",
+      "source": "common/common-considerations.md",
+      "severity": "CRITICAL",
+      "cwe": ["CWE-347"],
+      "threat_ref": "T-02",
+      "validation": "Submit token with alg:none — must be rejected with 401."
+    }
+  ],
+  "compliance_requirements": [],
+  "design_constraints": [],
+  "anti_patterns": [
+    "Storing passwords in plaintext or with reversible encryption.",
+    "Accepting alg:none or client-specified JWT algorithms.",
+    "Returning verbose error messages that distinguish 'user not found' from 'wrong password'."
+  ],
+  "required_controls": ["Argon2id password hashing", "JWT signature verification", "Rate limiting on /login", "Account lockout after N failures"],
+  "acceptance_criteria": [
+    "Login with a known-breached password is rejected (HIBP check or equivalent).",
+    "JWT with alg:none is rejected with HTTP 401.",
+    "More than 10 failed logins in 60 seconds triggers a lockout or CAPTCHA.",
+    "Passwords are stored as Argon2id hashes in the database."
+  ]
+}

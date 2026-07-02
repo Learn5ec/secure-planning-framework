@@ -1,5 +1,6 @@
 # Secure Planning Framework — Change Summary & Review Guide
 
+> **NOTE: This guide reflects the initial v2.0 transition. It is superseded by `improvement-plan.md`.**
 > A consolidated record of what was added/changed in this iteration, the system
 > architecture, and a departmental split for review so the work can be validated
 > quickly and consistently rather than by a single person.
@@ -25,7 +26,7 @@
 - **`meta/`** — `trigger_map.json`, `severity_map.json` (INFO→CRITICAL + escalation), `tag_index.json`, `version_manifest.json`.
 - **`knowledge/`** — full **owasp** cheat-sheet + `ai` / `mobile` / `compliance` stubs (curated from `data/`).
 
-> _Note: an `industries/` overlay layer was initially built (finance + insurance + stubs) but **removed in review** — see §5._
+> _Note: an `industries/` overlay layer was initially built but **removed in review**._
 
 ### 3. Reconciled SKILL.md edits into the engine
 

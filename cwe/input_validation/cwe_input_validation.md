@@ -3,7 +3,7 @@
 ---
 
 ## CWE-20 — Improper Input Validation
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Strict validation rules  
 Validation:
@@ -12,7 +12,7 @@ Validation:
 ---
 
 ## CWE-116 — Improper Encoding
-Mapped OWASP: A03  
+Mapped OWASP: A05  
 Enforcement:
 - Proper encoding  
 Validation:
@@ -21,7 +21,7 @@ Validation:
 ---
 
 ## CWE-129 — Improper Validation of Array Index
-Mapped OWASP: A04  
+Mapped OWASP: A06  
 Enforcement:
 - Boundary checks  
 Validation:
@@ -30,7 +30,7 @@ Validation:
 ---
 
 ## CWE-190 — Integer Overflow
-Mapped OWASP: A04  
+Mapped OWASP: A06  
 Enforcement:
 - Numeric limits  
 Validation:
