@@ -38,7 +38,9 @@ Authentication tokens and sensitive user data MUST NOT be stored in browser loca
 All cookies carrying authentication/session/sensitive data MUST:
 - Use HttpOnly flag
 - Use Secure flag
-- Set SameSite=Lax or Strict
+- Set SameSite=Strict for session/auth cookies; SameSite=Lax is the minimum acceptable floor.
+- SameSite=None MUST only be set when cross-site delivery is explicitly required AND the Secure flag is also set.
+- Verify no auth or session cookie is missing a SameSite attribute (absent SameSite defaults to browser-defined behaviour, which varies and may be unsafe).
 - Have an explicitly scoped Domain and Path
 Cookies are the only permitted **persistent** client-side store for such data; in-memory (non-persisted) access tokens are also permitted (see COM-001).
 **NON-NEGOTIABLE: this control is not subject to user override.**
