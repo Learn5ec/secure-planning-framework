@@ -34,10 +34,11 @@ Authentication tokens and sensitive user data MUST NOT be stored in browser loca
 All cookies carrying authentication/session/sensitive data MUST:
 - Use HttpOnly flag
 - Use Secure flag
-- Set SameSite=Lax or Strict
+- Set SameSite=Strict for session/auth cookies; SameSite=Lax is the minimum acceptable floor.
+- SameSite=None MUST only be set when cross-site delivery is explicitly required AND the Secure flag is also set.
+- Verify no auth or session cookie is missing a SameSite attribute (absent SameSite defaults to browser-defined behaviour, which varies and may be unsafe).
 - Have an explicitly scoped Domain and Path
-
-Cookies are the only permitted client-side store for such data (see COM-001).
+Cookies are the only permitted **persistent** client-side store for such data; in-memory (non-persisted) access tokens are also permitted (see COM-001).
 **NON-NEGOTIABLE: this control is not subject to user override.**
 
 ### Applies When
@@ -152,25 +153,6 @@ Application MUST NOT be accessible via direct public IP if WAF/CDN is configured
 
 ---
 
-# Rule ID: COM-008
-## Title: Enforce Strict Input Validation (Superseded)
-
-**Category:** Input Validation  
-
-### Rule
-*This rule has been superseded.* Please refer to the canonical input validation trio: **COM-034** (Type & Format Validation), **COM-035** (Length & Bounds), and **COM-036** (Business Logic Validation).
-
-### Applies When
-- Any user input field
-
-### Validation
-- See COM-034, COM-035, COM-036
-
-### Failure Impact
-- Injection, data corruption
-
----
-
 # Rule ID: COM-009
 ## Title: Restrict File Upload Access Duration
 
@@ -187,25 +169,6 @@ Uploaded documents containing sensitive data MUST have time-bound access and MUS
 
 ### Failure Impact
 - Sensitive data exposure
-
----
-
-# Rule ID: COM-010
-## Title: Enforce Token Expiry and Invalidation (Superseded)
-
-**Category:** Session Management  
-
-### Rule
-*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
-
-### Applies When
-- Token-based auth
-
-### Validation
-- See COM-039
-
-### Failure Impact
-- Session hijacking
 
 ---
 
@@ -272,35 +235,16 @@ User tokens MUST NOT grant elevated privileges such as admin access.
 **Category:** Authentication  
 
 ### Rule
-MFA and CAPTCHA MUST be implemented for sensitive applications unless explicitly overridden.
+MFA and CAPTCHA MUST be implemented for sensitive applications. This control is non-negotiable for any application handling authentication, payments, or personal data — it is not subject to user override.
 
 ### Applies When
-- Fintech, health, PII-heavy apps
+- Fintech, health, PII-heavy apps, or any app with authentication flows
 
 ### Validation
 - Verify presence in auth flow
 
 ### Failure Impact
 - Brute force attacks
-
----
-
-# Rule ID: COM-015
-## Title: Prevent Long-Lived Tokens (Superseded)
-
-**Category:** Session Security  
-
-### Rule
-*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
-
-### Applies When
-- Token-based auth
-
-### Validation
-- See COM-039
-
-### Failure Impact
-- Persistent compromise
 
 ---
 
@@ -423,25 +367,6 @@ Authorization MUST NOT rely on flags like isAdmin or isLoggedIn.
 
 ---
 
-# Rule ID: COM-022
-## Title: Prevent Session Fixation (Superseded)
-
-**Category:** Session Management  
-
-### Rule
-*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039**.
-
-### Applies When
-- Session creation
-
-### Validation
-- See COM-039
-
-### Failure Impact
-- Session fixation
-
----
-
 # Rule ID: COM-023
 ## Title: Enforce Single Device Admin Sessions (Conditional)
 
@@ -477,25 +402,6 @@ Backend MUST reject additional unexpected parameters in requests.
 
 ### Failure Impact
 - Mass assignment
-
----
-
-# Rule ID: COM-025
-## Title: Validate JWT Claims (Superseded)
-
-**Category:** Authentication  
-
-### Rule
-*This rule has been superseded.* Please refer to the canonical session/token lifecycle rule: **COM-039** and **COM-040**.
-
-### Applies When
-- JWT validation
-
-### Validation
-- See COM-039, COM-040
-
-### Failure Impact
-- Authentication bypass
 
 ---
 
@@ -765,7 +671,7 @@ File uploads MUST be hardened beyond extension/size checks (see COM-017, COM-018
 ### Rule
 Passwords and other secret authentication verifiers MUST be stored as salted, one-way hashes using a strong, memory-hard adaptive algorithm — **Argon2id preferred** (bcrypt or scrypt acceptable) — with a per-credential random salt and appropriate cost parameters. Passwords MUST NEVER be stored in plaintext or with reversible encryption.
 
-Server-side-stored bearer tokens, API keys, and password-reset / email-verification tokens MUST also be persisted as hashes (e.g., SHA-256) rather than in recoverable form, MUST be single-use and time-bound, and MUST be compared in constant time.
+Server-side-stored bearer tokens, API keys, and password-reset / email-verification tokens MUST also be persisted as hashes (e.g., SHA-256) rather than in recoverable form, MUST be single-use and time-bound, and MUST be compared in constant time. SHA-256 is acceptable ONLY for high-entropy (≥128-bit random) tokens; low-entropy secrets MUST use the Argon2id/bcrypt/scrypt path.
 **NON-NEGOTIABLE: this control is not subject to user override.**
 
 ### Applies When
@@ -1020,7 +926,7 @@ All dependencies, libraries, frameworks, runtimes, and server software MUST be t
 Production deployments MUST NOT expose development/debug surfaces: interactive API docs (Swagger/OpenAPI UI), GraphQL introspection, debug endpoints, verbose stack traces (see COM-031), default/sample pages, or directory listings. API schemas/specs MUST NOT leak internal hostnames, ports, or environment details (e.g., `localhost:port`). Such surfaces MUST be disabled or restricted to trusted networks/identities.
 
 ### Applies When
-- ONLY when the feature explicitly sends transactional or notification emails.
+- Any production deployment exposing HTTP services, API endpoints, documentation surfaces (Swagger/OpenAPI/GraphQL introspection), or debug endpoints.
 
 ### Validation
 - Request Swagger/OpenAPI UI or GraphQL introspection in production — MUST be unavailable/restricted
@@ -1078,7 +984,7 @@ Sending domains MUST publish and enforce SPF, DKIM, and DMARC to prevent email s
 **Category:** Session Security / Configuration  
 
 ### Rule
-Responses containing authenticated, personal, or sensitive data MUST set `Cache-Control: no-store` (with appropriate `Pragma`/`Expires`) so they are not cached by browsers, shared caches, or restored via back-navigation after logout (extends COM-022). Sensitive data MUST NOT be cached by intermediaries or CDNs.
+Responses containing authenticated, personal, or sensitive data MUST set `Cache-Control: no-store` (with appropriate `Pragma`/`Expires`) so they are not cached by browsers, shared caches, or restored via back-navigation after logout (extends COM-039). Sensitive data MUST NOT be cached by intermediaries or CDNs.
 
 ### Applies When
 - Any authenticated or sensitive HTTP response

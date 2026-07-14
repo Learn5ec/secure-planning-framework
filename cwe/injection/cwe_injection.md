@@ -49,7 +49,7 @@ Validation:
 ---
 
 ## CWE-918 — Server-Side Request Forgery (SSRF)
-Mapped OWASP: API7  
+Mapped OWASP: A01 Broken Access Control (Cross-ref: API7)  
 Enforcement:
 - URL validation + allowlist  
 Validation:

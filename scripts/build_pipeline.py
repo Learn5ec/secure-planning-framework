@@ -15,7 +15,7 @@ def compile_tiers():
     slim_rules = []
     blocks = common_content.split('---')
     for block in blocks:
-        if "**Severity:** CRITICAL" in block:
+        if "**Severity:** CRITICAL" in block or "Rule ID: COM-055" in block or "Rule ID: COM-056" in block or "Rule ID: COM-057" in block or "Rule ID: COM-058" in block:
             slim_rules.append(block.strip())
             
     slim_core_content = """# Secure Planning Framework — Slim Core Baseline
@@ -32,42 +32,6 @@ def compile_tiers():
     with open(slim_path, 'w') as f:
         f.write(slim_core_content)
     print(f"Generated {slim_path} with {len(slim_rules)} rules.")
-    
-    # We could also compile baseline vs full for AI/MCP, but SKILL.md will just use the "Risk Tier: baseline" vs "elevated" tags in the files directly to save token costs?
-    # If the LLM reads the file, it reads the whole file. To save tokens, we MUST split them into separate files.
-    # Let's split agentic_ai, llm_governance, mcp_server into _baseline.md and _extended.md
-    
-    ai_files = [
-        "domains/ai/agentic_ai_rules.md",
-        "domains/ai/llm_governance_rules.md",
-        "domains/mcp/mcp_server_rules.md"
-    ]
-    
-    for rel_path in ai_files:
-        full_path = os.path.join(repo_root, rel_path)
-        with open(full_path, 'r') as f:
-            content = f.read()
-            
-        blocks = content.split('---')
-        header = blocks[0]
-        baseline_rules = []
-        extended_rules = []
-        
-        for block in blocks[1:]:
-            if "Risk Tier: baseline" in block:
-                baseline_rules.append(block.strip())
-            elif "Rule ID:" in block:
-                extended_rules.append(block.strip())
-                
-        base_name = os.path.splitext(rel_path)[0]
-        
-        # Write baseline
-        with open(os.path.join(repo_root, f"{base_name}_baseline.md"), 'w') as f:
-            f.write(header + "---\n\n" + "\n\n---\n\n".join(baseline_rules) + "\n")
-            
-        # Write extended
-        with open(os.path.join(repo_root, f"{base_name}_extended.md"), 'w') as f:
-            f.write(header + "> NOTE: These are ELEVATED and HIGH-ASSURANCE rules.\n\n---\n\n" + "\n\n---\n\n".join(extended_rules) + "\n")
 
 def generate_adapters():
     print("Generating IDE adapters...")

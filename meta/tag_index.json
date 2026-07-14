@@ -32,9 +32,7 @@
       "CWE-613",
       "CWE-640",
       "CWE-798",
-      "COM-010",
       "COM-014",
-      "COM-015",
       "COM-019",
       "COM-020",
       "COM-038",
@@ -75,13 +73,13 @@
       "CWE-20",
       "CWE-116",
       "CWE-129",
-      "COM-008",
       "COM-027",
       "COM-029",
       "COM-034",
       "COM-035",
       "COM-036",
-      "COM-028"
+      "COM-028",
+      "COM-058"
     ],
     "data_protection": [
       "OWASP-A04-001",
@@ -102,17 +100,14 @@
       "COM-032",
       "COM-044",
       "COM-046",
-      "COM-052"
+      "COM-052",
+      "COM-056"
     ],
     "session_management": [
       "OWASP-A07-001",
       "CWE-613",
       "CWE-384",
       "COM-002",
-      "COM-010",
-      "COM-015",
-      "COM-022",
-      "COM-025",
       "COM-039",
       "COM-053",
       "COM-005",
@@ -135,12 +130,14 @@
       "COM-049",
       "COM-050",
       "COM-052",
-      "COM-053"
+      "COM-053",
+      "COM-055"
     ],
     "logging_monitoring": [
       "OWASP-A09-001",
       "LLM-GOV-006",
-      "CWE-532"
+      "CWE-532",
+      "COM-056"
     ],
     "error_handling": [
       "OWASP-A10-001",
@@ -182,7 +179,8 @@
       "COM-044",
       "COM-050",
       "COM-054",
-      "COM-005"
+      "COM-005",
+      "COM-057"
     ],
     "network_security": [
       "MASVS-NETWORK-1",
@@ -191,7 +189,8 @@
       "MCP-001",
       "COM-007",
       "COM-033",
-      "COM-054"
+      "COM-054",
+      "COM-057"
     ],
     "supply_chain": [
       "OWASP-A03-001",
@@ -216,9 +215,6 @@
       "LLM-GOV-009"
     ],
     "privacy_compliance": [
-      "DPDP-001",
-      "DPDP-002",
-      "DPDP-003",
       "MASVS-PRIVACY-1",
       "MASVS-PRIVACY-2",
       "MASVS-PRIVACY-3",

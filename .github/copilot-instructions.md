@@ -5,7 +5,6 @@
 ## Activation Model (read first)
 This skill is **always-on for planning** — it fires on every feature planning task by default.
 
-**Exclusion:** Do NOT use this skill while writing, fixing, or refactoring code.
 
 **The only way to suppress it** is to explicitly state:
 > *"Do not use SPF skill"*

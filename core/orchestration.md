@@ -56,12 +56,15 @@ above the activation threshold are loaded.
 
 ## 3. Dynamic Rule Retrieval
 Always load first (non-negotiable):
-1. `common/common-considerations.md`
+1. `common/slim_core.md` — the 10 CRITICAL always-applicable baseline rules.
 2. `meta/rule_index.json`
 3. `core/output_schema.json`
 
-Then load only the files activated in step 2 (domain rule packs, compliance
-packs, and category-specific `cwe/` files). Do **not** load packs that were not
+**High-risk upgrade:** If the feature meets ANY criterion in `activation_logic.json high_risk_criteria` (credentials/financial/health/biometric data, multi-agent, admin paths, payment/banking/healthcare systems), ALSO load `common/common-considerations.md` (full 58-rule baseline) and the `_extended` variant of each activated AI/MCP pack.
+
+For all other requests, `slim_core.md` is sufficient — do NOT load `common-considerations.md` to keep token usage bounded.
+
+Then load only the domain files activated in step 2. Do **not** load packs that were not
 activated — this keeps token usage bounded (lazy loading).
 
 ## 4. Threat Modeling
@@ -89,18 +92,19 @@ If the user explicitly requests a weaker control (e.g. "no MFA"):
 - record it under `design_constraints` as a `user-approved exception`.
 Never silently honor a downgrade.
 
-**Non-overridable controls:** COM-032 (encryption at rest), COM-033 (TLS 1.3 +
-strict HTTPS), COM-001 (no sensitive data in localStorage), COM-002 (secure
-cookie attributes), COM-036 (server-side validation always present), COM-038
-(passwords hashed, never encrypted), COM-040 (JWT signature verification), COM-044
-(no secrets/flags in API responses), COM-045 (server-side access-state enforcement),
-and COM-051 (multi-tenant isolation) CANNOT be overridden. Refuse the downgrade,
-keep the control, and record the request as a rejected anti-pattern (see
-`core/conflict_resolution.md`).
+**Non-overridable controls:** COM-032 (encryption at rest), COM-033 (TLS 1.2 minimum
+floor + strict HTTPS — no plain HTTP, no SSL/TLS≤1.1), COM-001 (no sensitive data in
+localStorage), COM-002 (secure cookie attributes), COM-036 (server-side validation always
+present when a backend exists), COM-038 (passwords hashed, never encrypted), COM-040
+(JWT signature verification), COM-044 (no secrets/flags in API responses), COM-045
+(server-side access-state enforcement), and COM-051 (multi-tenant isolation) CANNOT be
+overridden. Refuse the downgrade, keep the control, and record the request as a rejected
+anti-pattern (see `core/conflict_resolution.md`).
 
 ## 8. Output Generation
-Emit JSON strictly matching `core/output_schema.json`. No conversational text
-outside the JSON. Every rule reference carries its `rule_id` and `source`.
+Emit structured markdown containing the JSON blueprint (matching `core/output_schema.json`)
+within a ` ```json ``` ` code block, followed by a short conversational summary for the
+developer. Every rule reference carries its `rule_id` and `source` file.
 
 ---
 

@@ -46,9 +46,14 @@ No score threshold — deterministic inclusion.
 ---
 
 ## Always-On Loads (ignore activation; load for every request)
-- `common/common-considerations.md`
+- `common/slim_core.md` — the CRITICAL baseline (10 rules, always applicable).
 - `meta/rule_index.json`
 - `core/output_schema.json`
+
+**High-risk upgrade:** Additionally load `common/common-considerations.md` (full baseline)
+and AI/MCP `_extended` packs when any `high_risk_criteria` trigger applies (see
+`core/activation_logic.json`): credentials, financial, health, biometric data; multi-agent;
+admin paths; payment/banking/healthcare context.
 
 ---
 

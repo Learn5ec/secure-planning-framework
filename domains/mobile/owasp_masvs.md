@@ -1,6 +1,6 @@
 # OWASP Mobile Application Security Verification Standard (MASVS) — Security Rules
 
-**Sources:** OWASP MASVS v2.0, MASTG (Mobile App Security Testing Guide)
+**Sources:** OWASP MASVS v2.1.0 (verify at github.com/OWASP/owasp-masvs/releases/tag/v2.1.0), MASTG (Mobile App Security Testing Guide)
 **Scope:** iOS and Android Mobile Applications
 
 > These rules apply when designing, building, or assessing mobile applications (iOS, Android, or cross-platform like Flutter/React Native). The MASVS defines the security requirements, and the MASTG provides the testing procedures.
@@ -346,7 +346,7 @@ The app validates the integrity of the platform.
 - Respond appropriately (e.g., warn the user, block access, or wipe sensitive data) based on the app's risk profile.
 
 ### Applies When
-- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+- ONLY for L2/'R' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
 
 ### Validation
 - Standard testing procedures per MASTG
@@ -366,7 +366,7 @@ The app implements anti-tampering mechanisms.
 - Verify the integrity of the app's code and resources at runtime to prevent unauthorized modifications or repackaging.
 
 ### Applies When
-- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+- ONLY for L2/'R' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
 
 ### Validation
 - Standard testing procedures per MASTG
@@ -387,7 +387,7 @@ The app implements anti-static analysis mechanisms.
 - **Flutter:** Use `--obfuscate --split-debug-info` for Dart code.
 
 ### Applies When
-- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+- ONLY for L2/'R' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
 
 ### Validation
 - Standard testing procedures per MASTG
@@ -407,7 +407,7 @@ The app implements anti-dynamic analysis techniques.
 - Terminate or alter behavior if dynamic analysis is detected.
 
 ### Applies When
-- ONLY for L2/\'R\' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
+- ONLY for L2/'R' profile apps (financial, health, DRM, anti-cheat, or high-value intellectual property).
 
 ### Validation
 - Standard testing procedures per MASTG
@@ -426,13 +426,15 @@ The app minimizes access to sensitive data and resources.
 - Request only the permissions absolutely necessary for functionality.
 - Require informed user consent.
 - Enforce that third-party SDKs operate strictly on user consent and do not collect data by default.
-- Monitor and restrict third-party SDK network exfiltration behaviors.
+- Restrict third-party SDK network egress at the OS/network layer: use **Android Network Security Config** (`network_security_config.xml` with `cleartextTrafficPermitted="false"` and domain-scoped `<domain-config>` entries) and **iOS App Transport Security** (`NSAllowsArbitraryLoads=false` with `NSExceptionDomains` scoped to known first-party and SDK domains only). Outbound traffic to unknown domains from third-party SDKs MUST be detected via a proxy/runtime egress test during QA (e.g., OWASP MASTG dynamic testing with HTTP proxy).
 
 ### Applies When
-- The app requests device permissions, location, contacts, or collects user data.
+- The app requests device permissions, location, contacts, or collects user data; or integrates any third-party analytics, crash-reporting, or advertising SDK.
 
 ### Validation
 - Standard testing procedures per MASTG
+- Perform runtime egress test using an HTTP proxy (e.g., mitmproxy, Burp Suite) — flag any SDK traffic to undeclared domains
+- Verify `network_security_config.xml` (Android) or ATS configuration (iOS) is restrictive and not globally permissive
 
 ### Failure Impact
 - Security compromise related to this control

@@ -1,5 +1,4 @@
 {
-  "_comment": "This is a populated example of a valid SPF blueprint. The schema is enforced by core/output_schema.json.",
   "feature_summary": "User login endpoint with email/password authentication and JWT issuance.",
   "risk_classification": "HIGH",
   "risk_reasoning": "Handles credentials (minimum HIGH per severity_map escalation), publicly exposed, token issuance creates lateral-movement risk if compromised.",

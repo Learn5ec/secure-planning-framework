@@ -24,10 +24,10 @@ Examples:
 When two rules are equally restrictive or the comparison is not on a numeric
 scale, resolve by source precedence (highest wins):
 
-1. **Compliance** (DPDP / regulatory) — legal obligations cannot be relaxed.
-2. **Common Considerations** (`COM-*`) — non-negotiable baseline.
-3. **Domain rules** (OWASP / MASVS / API / AI / MCP) for the activated domain.
-4. **CWE mappings** — augment validation; never override the above.
+1. **Common Considerations** (`COM-*`) — non-negotiable baseline.
+2. **Domain rules** (OWASP / MASVS / API / AI / MCP) for the activated domain.
+3. **CWE mappings** — augment validation; never override the above.
+4. **Compliance** (DPDP / regulatory) — [DISABLED, move to top when re-enabled].
 
 A lower-precedence rule may only **add** strictness, never remove it.
 
@@ -39,7 +39,7 @@ user override under any circumstances. If a user requests their relaxation, refu
 the downgrade, keep the control, and note the request as a rejected anti-pattern:
 
 - **COM-032** — Encryption at rest (strong algorithms, managed keys).
-- **COM-033** — Encryption in transit: TLS 1.3 + strict HTTPS (no plain HTTP, no legacy TLS).
+- **COM-033** — Encryption in transit: TLS 1.2 minimum floor + strict HTTPS (no plain HTTP, no SSL/TLS<=1.1); TLS 1.3 preferred.
 - **COM-001** — No sensitive data/tokens in localStorage/sessionStorage.
 - **COM-002** — Secure cookie attributes (HttpOnly, Secure, SameSite, scoped Domain/Path).
 - **COM-036** — Server-side validation/sanitization must always be present; client-only validation is prohibited.

@@ -31,7 +31,7 @@ Validation:
 ---
 
 ## CWE-200 — Exposure of Sensitive Information
-Mapped OWASP: A04  
+Mapped OWASP: A01 Broken Access Control  
 Enforcement:
 - Restrict sensitive data exposure  
 Validation:

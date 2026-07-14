@@ -52,9 +52,7 @@
       "CWE-306"
     ],
     "common": [
-      "COM-010",
       "COM-014",
-      "COM-015",
       "COM-019",
       "COM-020",
       "COM-038",
@@ -87,13 +85,13 @@
       "CWE-400"
     ],
     "common": [
-      "COM-008",
       "COM-027",
       "COM-029",
       "COM-034",
       "COM-035",
       "COM-036",
-      "COM-028"
+      "COM-028",
+      "COM-058"
     ]
   },
   "injection": {
@@ -145,10 +143,6 @@
     ],
     "common": [
       "COM-002",
-      "COM-010",
-      "COM-015",
-      "COM-022",
-      "COM-025",
       "COM-039",
       "COM-053",
       "COM-005",
@@ -216,7 +210,8 @@
       "COM-049",
       "COM-050",
       "COM-052",
-      "COM-053"
+      "COM-053",
+      "COM-055"
     ]
   },
   "logging_monitoring": {
@@ -230,7 +225,9 @@
     "cwe": [
       "CWE-532"
     ],
-    "common": []
+    "common": [
+      "COM-056"
+    ]
   },
   "error_handling": {
     "owasp": [
@@ -325,7 +322,8 @@
     "common": [
       "COM-007",
       "COM-033",
-      "COM-054"
+      "COM-054",
+      "COM-057"
     ]
   },
   "supply_chain": {
@@ -351,7 +349,7 @@
     ]
   },
   "agentic_ai_security": {
-    "file": "domains/ai/agentic_ai_rules.md",
+    "file": "domains/ai/agentic_ai_rules_baseline.md",
     "rules": [
       "ASI-01",
       "ASI-02",
@@ -366,7 +364,7 @@
     ]
   },
   "llm_governance": {
-    "file": "domains/ai/llm_governance_rules.md",
+    "file": "domains/ai/llm_governance_rules_baseline.md",
     "rules": [
       "LLM-GOV-001",
       "LLM-GOV-002",
@@ -394,7 +392,7 @@
     ]
   },
   "mcp_security": {
-    "file": "domains/mcp/mcp_server_rules.md",
+    "file": "domains/mcp/mcp_server_rules_baseline.md",
     "rules": [
       "MCP-001",
       "MCP-002",

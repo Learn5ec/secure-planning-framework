@@ -94,7 +94,7 @@
           "rule_id": {
             "type": "string",
             "description": "Exact rule ID from the source file, e.g. COM-001, OWASP-A01-001, API-005.",
-            "pattern": "^(COM|OWASP|API|MASVS|ASI|LLM-GOV|MCP|CWE|DPDP)-[A-Z0-9-]+"
+            "pattern": "^(COM|OWASP|API|MASVS|ASI|LLM-GOV|MCP|CWE)-[A-Z0-9-]+"
           },
           "requirement": {
             "type": "string",

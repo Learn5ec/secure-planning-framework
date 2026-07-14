@@ -6,7 +6,7 @@
 ## Title: Enforce Object-Level Authorization
 
 **Source:** OWASP API Top 10:2023 - API1 Broken Object Level Authorization
-**Category:** API Access Control
+**Category:** Object-Level Authorization
 **Severity:** HIGH
 
 ### Rule
@@ -90,7 +90,7 @@ APIs MUST enforce rate limiting, quotas, and resource consumption limits.
 ## Title: Enforce Function-Level Authorization (BFLA)
 
 **Source:** OWASP API Top 10:2023 - API5 Broken Function Level Authorization
-**Category:** API Access Control
+**Category:** Function-Level Authorization
 **Severity:** HIGH
 
 ### Rule

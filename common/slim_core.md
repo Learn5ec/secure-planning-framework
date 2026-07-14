@@ -40,8 +40,7 @@ All cookies carrying authentication/session/sensitive data MUST:
 - Use Secure flag
 - Set SameSite=Lax or Strict
 - Have an explicitly scoped Domain and Path
-
-Cookies are the only permitted client-side store for such data (see COM-001).
+Cookies are the only permitted **persistent** client-side store for such data; in-memory (non-persisted) access tokens are also permitted (see COM-001).
 **NON-NEGOTIABLE: this control is not subject to user override.**
 
 ### Applies When
@@ -134,7 +133,7 @@ Input validation, sanitization, and output encoding MUST be applied at **every**
 ### Rule
 Passwords and other secret authentication verifiers MUST be stored as salted, one-way hashes using a strong, memory-hard adaptive algorithm — **Argon2id preferred** (bcrypt or scrypt acceptable) — with a per-credential random salt and appropriate cost parameters. Passwords MUST NEVER be stored in plaintext or with reversible encryption.
 
-Server-side-stored bearer tokens, API keys, and password-reset / email-verification tokens MUST also be persisted as hashes (e.g., SHA-256) rather than in recoverable form, MUST be single-use and time-bound, and MUST be compared in constant time.
+Server-side-stored bearer tokens, API keys, and password-reset / email-verification tokens MUST also be persisted as hashes (e.g., SHA-256) rather than in recoverable form, MUST be single-use and time-bound, and MUST be compared in constant time. SHA-256 is acceptable ONLY for high-entropy (≥128-bit random) tokens; low-entropy secrets MUST use the Argon2id/bcrypt/scrypt path.
 **NON-NEGOTIABLE: this control is not subject to user override.**
 
 ### Applies When
@@ -234,5 +233,88 @@ In multi-tenant, multi-branch, or multi-organization systems, every data access 
 
 ### Failure Impact
 - Cross-tenant data breach and modification
+
+---
+
+# Rule ID: COM-055
+## Title: Centralized Secrets Management / No Hardcoded Secrets
+
+**Category:** Configuration / Cryptography  
+**Severity:** HIGH
+
+### Rule
+API keys, database credentials, cryptographic keys, and third-party tokens MUST NOT be hardcoded in source code, committed to version control, embedded in client-side applications (mobile/web), or baked into container images. All secrets MUST be managed centrally using a dedicated secret vault or environment-injected secret manager.
+
+### Applies When
+- Any service, script, or application requiring credentials to access another service
+
+### Validation
+- Static code analysis (e.g., TruffleHog, GitLeaks) shows zero secrets in code
+- Secrets are dynamically retrieved at runtime or injected safely by the orchestrator
+
+### Failure Impact
+- Credential compromise, unauthorized access to adjacent systems
+
+---
+
+# Rule ID: COM-056
+## Title: Secure Logging Baseline
+
+**Category:** Logging & Alerting  
+**Severity:** HIGH
+
+### Rule
+The system MUST log critical security events including authentication success/failures, authorization decisions (especially failures), and all administrative/privileged actions. The system MUST strictly PROHIBIT the logging of sensitive data including passwords, authentication tokens, session IDs, OTPs, full credit card numbers (PAN), and full PII/PHI.
+
+### Applies When
+- Implementing audit trails and application logs
+
+### Validation
+- Review logs for absence of sensitive data
+- Verify that security-relevant events generate logs with adequate context (timestamp, user ID, event type, success/failure)
+
+### Failure Impact
+- Data exposure through log files, lack of accountability during incident response
+
+---
+
+# Rule ID: COM-057
+## Title: Server-Side Request Forgery (SSRF) Prevention
+
+**Category:** Network Security / Architecture  
+**Severity:** HIGH
+
+### Rule
+Any feature that initiates outbound HTTP requests or network connections based on user input MUST strictly validate and restrict destinations. The system MUST enforce an allowlist of permitted domains/IPs, explicitly deny access to internal networks (RFC1918), link-local addresses, cloud metadata services (e.g., 169.254.169.254), and loopback. Redirect following MUST be disabled or strictly re-validated to prevent bypasses.
+
+### Applies When
+- Webhooks, URL fetching, proxying requests, PDF generation from URLs
+
+### Validation
+- Attempt to fetch internal resources (e.g., `http://127.0.0.1` or `http://169.254.169.254`) — requests must fail
+
+### Failure Impact
+- Internal network enumeration, cloud credential theft, unauthorized access to internal APIs
+
+---
+
+# Rule ID: COM-058
+## Title: Prevent Insecure Deserialization
+
+**Category:** Input Validation / Architecture  
+**Severity:** HIGH
+
+### Rule
+The application MUST NOT deserialize untrusted data using unsafe deserialization formats or libraries that allow arbitrary object instantiation (e.g., Java native serialization, Python `pickle`, .NET `BinaryFormatter`, or YAML unsafe loads). Systems MUST use safe, data-only serialization formats like JSON or Protocol Buffers.
+
+### Applies When
+- Processing serialized data from APIs, queues, files, or cache
+
+### Validation
+- Ensure parsers are configured securely (e.g., `yaml.safe_load`)
+- Send manipulated serialized objects (if applicable) — must result in a safe rejection without executing code
+
+### Failure Impact
+- Remote Code Execution (RCE), Denial of Service (DoS)
 
 ---

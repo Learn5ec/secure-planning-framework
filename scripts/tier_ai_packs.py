@@ -40,9 +40,12 @@ tiers = {
 }
 
 files_to_update = [
-    "domains/ai/agentic_ai_rules.md",
-    "domains/ai/llm_governance_rules.md",
-    "domains/mcp/mcp_server_rules.md"
+    "domains/ai/agentic_ai_rules_baseline.md",
+    "domains/ai/agentic_ai_rules_extended.md",
+    "domains/ai/llm_governance_rules_baseline.md",
+    "domains/ai/llm_governance_rules_extended.md",
+    "domains/mcp/mcp_server_rules_baseline.md",
+    "domains/mcp/mcp_server_rules_extended.md"
 ]
 
 def update_file(filepath):
@@ -53,14 +56,20 @@ def update_file(filepath):
     # We will process rule by rule
     # Find all Rule IDs
     def replacer(match):
-        rule_id = match.group(1)
+        rule_id = match.group(2)
         tier = tiers.get(rule_id, "elevated")
         
         # Replace Category with Category + Risk Tier
         block = match.group(0)
         
-        # Only add Risk Tier if it doesn't already exist
-        if "**Risk Tier:**" not in block:
+        # Replace existing Risk Tier or add it
+        if "**Risk Tier:**" in block:
+            block = re.sub(
+                r'\*\*Risk Tier:\*\* .*?\n',
+                r'**Risk Tier:** ' + tier + r'\n',
+                block
+            )
+        else:
             block = re.sub(
                 r'(\*\*Category:\*\*.*?\n)', 
                 r'\1**Risk Tier:** ' + tier + r'\n', 

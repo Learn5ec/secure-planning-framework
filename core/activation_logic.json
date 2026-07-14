@@ -23,10 +23,24 @@
     }
   },
   "always_load": [
-    "common/common-considerations.md",
+    "common/slim_core.md",
     "meta/rule_index.json",
     "core/output_schema.json"
   ],
+  "high_risk_load": {
+    "file": "common/common-considerations.md",
+    "note": "Load this ADDITIONALLY (on top of slim_core.md) when the feature is high-risk."
+  },
+  "high_risk_criteria": {
+    "description": "If ANY of these apply, the request is high-risk: load common/common-considerations.md AND _extended packs instead of _baseline.",
+    "triggers": [
+      "feature handles credentials, financial, health, or biometric data",
+      "feature involves multi-agent orchestration or autonomous tool execution",
+      "feature has admin or privileged access paths",
+      "feature is a payment, banking, insurance, or healthcare system",
+      "severity_map escalation resolves to HIGH or CRITICAL"
+    ]
+  },
   "domains": {
     "web": {
       "file": "domains/web/web_owasp_top10_2025.md",
@@ -53,16 +67,20 @@
       ]
     },
     "ai_agentic": {
-      "file": "domains/ai/agentic_ai_rules.md",
+      "file": "domains/ai/agentic_ai_rules_baseline.md",
+      "extended_file": "domains/ai/agentic_ai_rules_extended.md",
       "rule_prefixes": ["ASI-"],
+      "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
         "agent", "autonomous", "multi-agent", "tool calling",
         "orchestration", "agentic"
       ]
     },
     "ai_llm": {
-      "file": "domains/ai/llm_governance_rules.md",
+      "file": "domains/ai/llm_governance_rules_baseline.md",
+      "extended_file": "domains/ai/llm_governance_rules_extended.md",
       "rule_prefixes": ["LLM-GOV-"],
+      "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
         "llm", "ai feature", "openai", "anthropic", "gemini",
         "rag", "vector database", "model api", "ai-generated",
@@ -70,8 +88,10 @@
       ]
     },
     "mcp": {
-      "file": "domains/mcp/mcp_server_rules.md",
+      "file": "domains/mcp/mcp_server_rules_baseline.md",
+      "extended_file": "domains/mcp/mcp_server_rules_extended.md",
       "rule_prefixes": ["MCP-"],
+      "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
         "mcp", "mcp server", "mcp tool",
         "model context protocol", "tool server"
@@ -112,9 +132,8 @@
     "purpose": "Curated, token-efficient cheat-sheets distilled from data/ raw sources; loaded for quick reference, not as authoritative rules.",
     "areas": {
       "owasp": "knowledge/owasp/owasp_cheatsheet.md",
-      "ai": "knowledge/ai/ai_cheatsheet.md",
-      "mobile": "knowledge/mobile/mobile_cheatsheet.md",
-      "compliance": "knowledge/compliance/compliance_cheatsheet.md"
+      "compliance": "knowledge/compliance/compliance_cheatsheet.md",
+      "_removed": "knowledge/ai/ and knowledge/mobile/ directories were deleted; references removed to avoid dangling pointers."
     }
   }
 }

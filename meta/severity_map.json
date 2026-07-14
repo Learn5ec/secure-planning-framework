@@ -41,7 +41,6 @@
   "escalation_rules": [
     "Any handling of credentials, financial, health, or biometric data => minimum HIGH baseline.",
     "Admin or impersonation capability => minimum HIGH baseline.",
-    "Public, unauthenticated exposure of sensitive data => CRITICAL.",
-    "Regulatory (DPDP) violation potential => never below HIGH. [DISABLED — DPDPA not enforced; remove this note when re-enabled]"
+    "Public, unauthenticated exposure of sensitive data => CRITICAL."
   ]
 }
