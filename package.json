@@ -1,0 +1,42 @@
+{
+  "name": "@learn5ec/secure-planning-framework",
+  "version": "1.0.0",
+  "description": "Secure Planning Framework - A comprehensive security rules engine for AI-assisted development",
+  "type": "module",
+  "bin": {
+    "spf": "./bin/spf.mjs"
+  },
+  "files": [
+    "bin/",
+    "SKILL.md",
+    "common/",
+    "core/",
+    "domains/",
+    "meta/",
+    "cwe/",
+    "compliance/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "security",
+    "framework",
+    "claude",
+    "skill",
+    "npx",
+    "owasp",
+    "masvs",
+    "ai"
+  ],
+  "author": "Learn5ec",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Learn5ec/secure-planning-framework.git"
+  },
+  "homepage": "https://github.com/Learn5ec/secure-planning-framework#readme",
+  "bugs": {
+    "url": "https://github.com/Learn5ec/secure-planning-framework/issues"
+  }
+}
