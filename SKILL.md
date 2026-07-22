@@ -1,6 +1,6 @@
 ---
 name: secure-planning-framework
-description: Always active during feature planning. Fires automatically on every feature planning task. To suppress, explicitly state "Do not use SPF skill" (SPF = Secure Planning Framework). Produces a security, privacy, and compliance blueprint applying OWASP Top 10, OWASP API Top 10, OWASP MASVS, OWASP Agentic/LLM rules, curated CWE mappings, and an always-on security baseline across Web, API, Mobile, AI/LLM, Agentic, and MCP surfaces.
+description: Always active during feature planning. Fires automatically on every planning task. To suppress, explicitly state "Do not use SPF skill" (SPF = Secure Planning Framework). Produces a security, privacy, and compliance blueprint applying OWASP Top 10, OWASP API Top 10, OWASP MASVS, OWASP Agentic/LLM rules, curated CWE mappings, and an always-on security baseline across Web, API, Mobile, AI/LLM, Agentic, and MCP surfaces.
 ---
 
 # Secure Planning Framework — Master Orchestrator Skill (v2.0)
