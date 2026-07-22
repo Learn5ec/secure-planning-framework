@@ -71,24 +71,16 @@ secure-planning-framework/
 │       └── dpdp/                     # DPDPA rules (disabled)
 ├── checklists/                       # Security checklists by category
 ├── examples/                         # Example security blueprints
-├── delivery/                         # IDE adapter scaffolds
-│   ├── claude/                       # Claude Code adapter
-│   ├── cursor/                       # Cursor adapter
-│   ├── windsurf/                     # Windsurf adapter
-│   ├── vscode/                       # VS Code Copilot adapter
-│   ├── mcp/                          # MCP server adapter (planned)
-│   ├── npm/                          # npm distribution
-│   └── cli/                          # CLI tool
+│   ├── login_api_blueprint.json      # High-risk login API example
+│   └── chatbot_blueprint.json        # Medium-risk LLM chatbot example
 ├── meta/                             # Metadata & indexes
 │   ├── rule_index.json               # Rule ID to file mapping
 │   ├── version_manifest.json         # Framework version info
 │   └── trigger_map.json              # Keyword bootstrap map
-├── scripts/                          # Build & validation scripts
-├── examples/                         # Example security blueprints
-│   ├── login_api_blueprint.json      # High-risk login API example
-│   └── chatbot_blueprint.json        # Medium-risk LLM chatbot example
 └── docs/                             # Documentation & archive
 ```
+
+**Note:** IDE adapter files (`.cursorrules`, `.windsurfrules`, `.github/copilot-instructions.md`) and scaffolding directories (`delivery/`, `scripts/`) are maintained locally but not tracked in the repository.
 
 ## Usage
 
@@ -206,10 +198,10 @@ npm test
 
 The framework includes scaffolds for:
 - **Claude Code** — `SKILL.md` at root (already integrated)
-- **Cursor** — `.cursorrules` (auto-generated)
-- **Windsurf** — `.windsurfrules` (auto-generated)
-- **VS Code Copilot** — `.github/copilot-instructions.md` (auto-generated)
-- **MCP Server** — `delivery/mcp/` (planned)
+- **Cursor** — `.cursorrules` (auto-generated, maintained locally)
+- **Windsurf** — `.windsurfrules` (auto-generated, maintained locally)
+- **VS Code Copilot** — `.github/copilot-instructions.md` (auto-generated, maintained locally)
+- **MCP Server** — `delivery/mcp/` (planned, maintained locally)
 
 ## Best Practices
 
