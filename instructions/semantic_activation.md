@@ -2,7 +2,7 @@
 
 The activation engine decides **which domain rule packs to load** for a given
 request. The skill is always-on — Stage 0 has been removed. Backing data lives
-in `meta/trigger_map.json` and `core/activation_logic.json`.
+in `../../meta/trigger_map.json` and `templates/activation_logic.json`.
 
 ---
 
@@ -46,13 +46,13 @@ No score threshold — deterministic inclusion.
 ---
 
 ## Always-On Loads (ignore activation; load for every request)
-- `common/slim_core.md` — the CRITICAL baseline (10 rules, always applicable).
+- `instructions/slim_core.md` — the CRITICAL baseline (10 rules, always applicable).
 - `meta/rule_index.json`
-- `core/output_schema.json`
+- `templates/output_schema.json`
 
-**High-risk upgrade:** Additionally load `common/common-considerations.md` (full baseline)
+**High-risk upgrade:** Additionally load `instructions/common_considerations.md` (full baseline)
 and AI/MCP `_extended` packs when any `high_risk_criteria` trigger applies (see
-`core/activation_logic.json`): credentials, financial, health, biometric data; multi-agent;
+`templates/activation_logic.json`): credentials, financial, health, biometric data; multi-agent;
 admin paths; payment/banking/healthcare context.
 
 ---
@@ -84,8 +84,8 @@ A resolved activation set, e.g.:
   "compliance": [],
   "cwe_categories": ["access_control", "authentication"],
   "files_to_load": [
-    "domains/web/web_owasp_top10_2025.md",
-    "domains/api/owasp_api_top10_2023.md"
+    "knowledge/owasp/web_owasp_top10_2025.md",
+    "knowledge/api-top10/owasp_api_top10_2023.md"
   ]
 }
 ```

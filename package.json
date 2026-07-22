@@ -1,42 +1,40 @@
 {
-  "name": "@learn5ec/secure-planning-framework",
-  "version": "1.0.0",
-  "description": "Secure Planning Framework - A comprehensive security rules engine for AI-assisted development",
+  "name": "secure-planning-framework",
+  "version": "3.0.0",
+  "description": "Modular secure planning orchestration skill. Always-on: fires by default on every planning/development task; opt-out via explicit phrase. Converts feature ideas into enforceable security blueprints.",
   "type": "module",
   "bin": {
     "spf": "./bin/spf.mjs"
   },
-  "files": [
-    "bin/",
-    "SKILL.md",
-    "common/",
-    "core/",
-    "domains/",
-    "meta/",
-    "cwe/",
-    "compliance/"
-  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node scripts/build.mjs",
+    "generate-index": "node scripts/generate-index.mjs",
+    "validate": "node scripts/validate.mjs",
+    "test": "node scripts/test.mjs"
   },
   "keywords": [
     "security",
-    "framework",
-    "claude",
-    "skill",
-    "npx",
+    "planning",
     "owasp",
-    "masvs",
-    "ai"
+    "compliance",
+    "ai",
+    "coding-assistant",
+    "skill"
   ],
-  "author": "Learn5ec",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Learn5ec/secure-planning-framework.git"
+  "engines": {
+    "node": ">=18.0.0"
   },
-  "homepage": "https://github.com/Learn5ec/secure-planning-framework#readme",
-  "bugs": {
-    "url": "https://github.com/Learn5ec/secure-planning-framework/issues"
-  }
+  "files": [
+    "bin/",
+    "instructions/",
+    "templates/",
+    "knowledge/",
+    "meta/",
+    "mappings/",
+    "scripts/",
+    "examples/",
+    "SKILL.md",
+    "package.json"
+  ]
 }

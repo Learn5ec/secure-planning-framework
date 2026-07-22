@@ -40,7 +40,7 @@ Examples:
   console.log(`Running: spf ${command}\n`);
   
   try {
-    execSync(`python3 scripts/framework_runner.py ${command}`, { stdio: 'inherit' });
+    execSync(`python3 scripts/build_pipeline.py ${command}`, { stdio: 'inherit' });
   } catch (err) {
     console.error(`❌ Command failed: ${command}`);
     process.exit(err.status || 1);

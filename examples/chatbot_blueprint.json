@@ -1,0 +1,47 @@
+{
+  "_comment": "Example security blueprint — NOT a test script. Demonstrates expected output format for a medium-risk LLM chatbot feature.",
+  "feature_summary": "Implementation of a customer support chatbot utilizing a Large Language Model and RAG architecture, with safeguards against prompt injection.",
+  "risk_classification": "MEDIUM",
+  "risk_reasoning": "The chatbot accesses customer support knowledge bases but does not perform state-changing transactions.",
+  "data_sensitivity": ["Customer Support Data"],
+  "actors": ["Authenticated Users", "LLM Provider"],
+  "assumptions": ["LLM Provider is a trusted third-party"],
+  "threat_model": [
+    {
+      "threat_id": "T-01",
+      "threat": "Prompt Injection",
+      "attack_vector": "User inputs malicious instructions disguised as a support query",
+      "impact": "Bypass of safety filters or unauthorized data access",
+      "cia": {
+        "confidentiality": "MEDIUM",
+        "integrity": "MEDIUM",
+        "availability": "NONE"
+      }
+    }
+  ],
+  "security_requirements": [
+    {
+      "rule_id": "LLM-GOV-003",
+      "requirement": "LLM Input/Output Security (Prompt Injection Guardrails)",
+      "source": "knowledge/ai/llm_governance_rules_baseline.md",
+      "severity": "HIGH",
+      "threat_ref": "T-01",
+      "validation": "Execute a suite of jailbreak prompts; ensure the LLM refuses or fails safely."
+    }
+  ],
+  "design_constraints": [
+    "RAG context must be filtered based on user RBAC before passing to LLM"
+  ],
+  "anti_patterns": [
+    "Direct execution of LLM output as code",
+    "Concatenating user input directly into the system prompt without delimiters"
+  ],
+  "required_controls": [
+    "Prompt Output Filtering",
+    "RBAC for RAG retrieval"
+  ],
+  "acceptance_criteria": [
+    "Jailbreak prompts trigger a standard safe-refusal response",
+    "Users cannot query support tickets belonging to other organizations via the chatbot"
+  ]
+}

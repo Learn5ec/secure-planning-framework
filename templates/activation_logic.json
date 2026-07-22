@@ -23,16 +23,16 @@
     }
   },
   "always_load": [
-    "common/slim_core.md",
+    "instructions/slim_core.md",
     "meta/rule_index.json",
-    "core/output_schema.json"
+    "templates/output_schema.json"
   ],
   "high_risk_load": {
-    "file": "common/common-considerations.md",
+    "file": "instructions/common_considerations.md",
     "note": "Load this ADDITIONALLY (on top of slim_core.md) when the feature is high-risk."
   },
   "high_risk_criteria": {
-    "description": "If ANY of these apply, the request is high-risk: load common/common-considerations.md AND _extended packs instead of _baseline.",
+    "description": "If ANY of these apply, the request is high-risk: load instructions/common_considerations.md AND _extended packs instead of _baseline.",
     "triggers": [
       "feature handles credentials, financial, health, or biometric data",
       "feature involves multi-agent orchestration or autonomous tool execution",
@@ -43,7 +43,7 @@
   },
   "domains": {
     "web": {
-      "file": "domains/web/web_owasp_top10_2025.md",
+      "file": "knowledge/owasp/web_owasp_top10_2025.md",
       "rule_prefixes": ["OWASP-"],
       "triggers": [
         "web", "ui", "frontend", "browser", "form", "page",
@@ -51,7 +51,7 @@
       ]
     },
     "api": {
-      "file": "domains/api/owasp_api_top10_2023.md",
+      "file": "knowledge/api-top10/owasp_api_top10_2023.md",
       "rule_prefixes": ["API-"],
       "triggers": [
         "api", "endpoint", "rest", "graphql", "webhook",
@@ -59,7 +59,7 @@
       ]
     },
     "mobile": {
-      "file": "domains/mobile/owasp_masvs.md",
+      "file": "knowledge/masvs/OWASP_MASVS.yaml",
       "rule_prefixes": ["MASVS-"],
       "triggers": [
         "mobile", "android", "ios", "flutter", "app", "apk",
@@ -67,8 +67,8 @@
       ]
     },
     "ai_agentic": {
-      "file": "domains/ai/agentic_ai_rules_baseline.md",
-      "extended_file": "domains/ai/agentic_ai_rules_extended.md",
+      "file": "knowledge/ai/agentic_ai_rules_baseline.md",
+      "extended_file": "knowledge/ai/agentic_ai_rules_extended.md",
       "rule_prefixes": ["ASI-"],
       "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
@@ -77,8 +77,8 @@
       ]
     },
     "ai_llm": {
-      "file": "domains/ai/llm_governance_rules_baseline.md",
-      "extended_file": "domains/ai/llm_governance_rules_extended.md",
+      "file": "knowledge/ai/llm_governance_rules_baseline.md",
+      "extended_file": "knowledge/ai/llm_governance_rules_extended.md",
       "rule_prefixes": ["LLM-GOV-"],
       "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
@@ -88,8 +88,8 @@
       ]
     },
     "mcp": {
-      "file": "domains/mcp/mcp_server_rules_baseline.md",
-      "extended_file": "domains/mcp/mcp_server_rules_extended.md",
+      "file": "knowledge/ai/mcp_server_rules_baseline.md",
+      "extended_file": "knowledge/ai/mcp_server_rules_extended.md",
       "rule_prefixes": ["MCP-"],
       "note": "Load _baseline by default; load _extended only when high_risk_criteria is met.",
       "triggers": [
@@ -104,8 +104,8 @@
       "_disabled": true,
       "_reason": "DPDPA compliance is commented out pending org-wide DPDPA implementation clarity. Re-enable when org decision is made.",
       "files": [
-        "compliance/dpdp/dpdp_rules.md",
-        "compliance/dpdp/dpdpa-compliance.md"
+        "mappings/compliance/dpdp/dpdp_rules.md",
+        "mappings/compliance/dpdp/dpdpa-compliance.md"
       ],
       "rule_prefixes": ["DPDP-"],
       "force_activate_on_personal_data": false,
@@ -114,8 +114,8 @@
     }
   },
   "cwe": {
-    "dir": "cwe/",
-    "load_when": "category-specific; load the matching cwe/<category>/ file when that weakness class is in scope",
+    "dir": "knowledge/cwe/",
+    "load_when": "category-specific; load the matching knowledge/cwe/<category>.md file when that weakness class is in scope",
     "categories": [
       "access_control",
       "authentication",
@@ -124,16 +124,14 @@
       "business_logic",
       "configuration",
       "general"
-    ],
-    "_path_note": "B6 RESOLVED: cwe/validation/ renamed to cwe/input_validation/ to match this config."
+    ]
   },
   "knowledge": {
     "dir": "knowledge/",
-    "purpose": "Curated, token-efficient cheat-sheets distilled from data/ raw sources; loaded for quick reference, not as authoritative rules.",
+    "purpose": "Curated, token-efficient cheat-sheets distilled from raw sources; loaded for quick reference, not as authoritative rules.",
     "areas": {
-      "owasp": "knowledge/owasp/owasp_cheatsheet.md",
-      "compliance": "knowledge/compliance/compliance_cheatsheet.md",
-      "_removed": "knowledge/ai/ and knowledge/mobile/ directories were deleted; references removed to avoid dangling pointers."
+      "owasp": "knowledge/owasp/cheatsheet.md",
+      "compliance": "knowledge/compliance/cheatsheet.md"
     }
   }
 }

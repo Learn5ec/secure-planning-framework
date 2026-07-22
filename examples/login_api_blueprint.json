@@ -1,0 +1,68 @@
+{
+  "_comment": "Example security blueprint — NOT a test script. Demonstrates expected output format for a high-risk login API feature.",
+  "feature_summary": "Implementation of a secure login API endpoint with rate limiting, secure transit, and protection against injection and brute force attacks.",
+  "risk_classification": "HIGH",
+  "risk_reasoning": "Login APIs handle sensitive credentials and act as the primary gateway to user accounts, making them a high-value target for attackers.",
+  "data_sensitivity": ["Passwords", "Email Addresses"],
+  "actors": ["Unauthenticated Users", "Authenticated Users", "Administrators"],
+  "assumptions": ["Users connect over the internet"],
+  "threat_model": [
+    {
+      "threat_id": "T-01",
+      "threat": "Brute force and credential stuffing attacks",
+      "attack_vector": "Automated scripts attempting multiple password guesses",
+      "impact": "Account compromise",
+      "cia": {
+        "confidentiality": "HIGH",
+        "integrity": "HIGH",
+        "availability": "NONE"
+      }
+    },
+    {
+      "threat_id": "T-02",
+      "threat": "SQL Injection",
+      "attack_vector": "Malicious payload in email or password fields",
+      "impact": "Database dump or unauthorized access",
+      "cia": {
+        "confidentiality": "HIGH",
+        "integrity": "HIGH",
+        "availability": "HIGH"
+      }
+    }
+  ],
+  "security_requirements": [
+    {
+      "rule_id": "COM-014",
+      "requirement": "Enforce MFA and CAPTCHA",
+      "source": "instructions/common_considerations.md",
+      "severity": "HIGH",
+      "threat_ref": "T-01",
+      "validation": "Verify rate limiter prevents more than 5 attempts per minute"
+    },
+    {
+      "rule_id": "OWASP-A05-001",
+      "requirement": "Use Parameterized Queries",
+      "source": "knowledge/api-top10/owasp_api_top10_2023.md",
+      "severity": "CRITICAL",
+      "threat_ref": "T-02",
+      "validation": "Code review confirms no concatenated SQL strings"
+    }
+  ],
+  "design_constraints": [
+    "Rate limiter must use Redis or similar distributed cache",
+    "Passwords must be hashed with Argon2id"
+  ],
+  "anti_patterns": [
+    "Verbose error messages (e.g., 'User not found')",
+    "Returning JWT tokens in URL parameters"
+  ],
+  "required_controls": [
+    "Rate Limiting",
+    "Parameterization",
+    "TLS 1.2+"
+  ],
+  "acceptance_criteria": [
+    "Endpoint returns 429 Too Many Requests after 5 failed logins",
+    "SQLi payloads in email field do not trigger database errors"
+  ]
+}

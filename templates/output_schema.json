@@ -102,7 +102,7 @@
           },
           "source": {
             "type": "string",
-            "description": "Source rule file path, e.g. common/common-considerations.md."
+            "description": "Source rule file path, e.g. instructions/common_considerations.md."
           },
           "severity": {
             "type": "string",

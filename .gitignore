@@ -1,3 +1,6 @@
-reference-and-planning-docs/
-data/
-tests/
+.cursorrules
+.git
+.github
+.windsurfrules
+docs/
+delivery/

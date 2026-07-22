@@ -4,6 +4,6 @@
 
 ## Intended design
 Expose the framework as an MCP server with a `plan_secure_feature` tool that takes a
-feature description and returns the `core/output_schema.json` blueprint. The server
-loads rule packs from `domains/`, `compliance/`, `common/` per
-`core/activation_logic.json`.
+feature description and returns the `templates/output_schema.json` blueprint. The server
+loads rule packs from `knowledge/`, `mappings/compliance/`, `instructions/` per
+`templates/activation_logic.json`.

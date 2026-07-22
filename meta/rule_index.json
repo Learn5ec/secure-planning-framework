@@ -349,7 +349,7 @@
     ]
   },
   "agentic_ai_security": {
-    "file": "domains/ai/agentic_ai_rules_baseline.md",
+    "file": "knowledge/ai/agentic_ai_rules_baseline.md",
     "rules": [
       "ASI-01",
       "ASI-02",
@@ -364,7 +364,7 @@
     ]
   },
   "llm_governance": {
-    "file": "domains/ai/llm_governance_rules_baseline.md",
+    "file": "knowledge/ai/llm_governance_rules_baseline.md",
     "rules": [
       "LLM-GOV-001",
       "LLM-GOV-002",
@@ -392,7 +392,7 @@
     ]
   },
   "mcp_security": {
-    "file": "domains/mcp/mcp_server_rules_baseline.md",
+    "file": "knowledge/ai/mcp_server_rules_baseline.md",
     "rules": [
       "MCP-001",
       "MCP-002",
@@ -404,7 +404,7 @@
     ]
   },
   "mobile_security": {
-    "file": "domains/mobile/owasp_masvs.md",
+    "file": "knowledge/masvs/OWASP_MASVS.yaml",
     "rules": [
       "MASVS-STORAGE-1",
       "MASVS-STORAGE-2",

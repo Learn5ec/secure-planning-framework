@@ -12,13 +12,13 @@ entrypoint, this file is the procedure.
 prompt
   → 0. Opt-Out Check               (ABORT only if user says "Do not use SPF skill")
   → 1. Context Inference
-  → 2. Semantic Activation        (see core/semantic_activation.md)
+  → 2. Semantic Activation        (see instructions/semantic_activation.md)
   → 3. Dynamic Rule Retrieval     (read only activated files)
   → 4. Threat Modeling
   → 5. Rule Selection
-  → 6. Conflict Resolution        (see core/conflict_resolution.md)
+  → 6. Conflict Resolution        (see instructions/conflict_resolution.md)
   → 7. Override Handling
-  → 8. Output Generation          (core/output_schema.json)
+  → 8. Output Generation          (templates/output_schema.json)
 ```
 
 ---
@@ -49,20 +49,20 @@ posed to the user) rather than guessing. Any assumption you do make MUST be
 minimal and listed explicitly in the output's `assumptions`.
 
 ## 2. Semantic Activation
-Run the hybrid activation model in `core/semantic_activation.md` against
-`meta/trigger_map.json` and `core/activation_logic.json` to produce the set of
+Run the hybrid activation model in `instructions/semantic_activation.md` against
+`meta/trigger_map.json` and `templates/activation_logic.json` to produce the set of
 **activated domains and compliance packs** with confidence scores. Only files
 above the activation threshold are loaded.
 
 ## 3. Dynamic Rule Retrieval
 Always load first (non-negotiable):
-1. `common/slim_core.md` — the 10 CRITICAL always-applicable baseline rules.
+1. `instructions/slim_core.md` — the 10 CRITICAL always-applicable baseline rules.
 2. `meta/rule_index.json`
-3. `core/output_schema.json`
+3. `templates/output_schema.json`
 
-**High-risk upgrade:** If the feature meets ANY criterion in `activation_logic.json high_risk_criteria` (credentials/financial/health/biometric data, multi-agent, admin paths, payment/banking/healthcare systems), ALSO load `common/common-considerations.md` (full 58-rule baseline) and the `_extended` variant of each activated AI/MCP pack.
+**High-risk upgrade:** If the feature meets ANY criterion in `templates/activation_logic.json high_risk_criteria` (credentials/financial/health/biometric data, multi-agent, admin paths, payment/banking/healthcare systems), ALSO load `instructions/common_considerations.md` (full 58-rule baseline) and the `_extended` variant of each activated AI/MCP pack.
 
-For all other requests, `slim_core.md` is sufficient — do NOT load `common-considerations.md` to keep token usage bounded.
+For all other requests, `instructions/slim_core.md` is sufficient — do NOT load `instructions/common_considerations.md` to keep token usage bounded.
 
 Then load only the domain files activated in step 2. Do **not** load packs that were not
 activated — this keeps token usage bounded (lazy loading).
@@ -82,7 +82,7 @@ Threats are grounded in the rules retrieved — not generic.
 - Output with zero selected rules is INVALID.
 
 ## 6. Conflict Resolution
-When two rules conflict, apply `core/conflict_resolution.md`
+When two rules conflict, apply `instructions/conflict_resolution.md`
 (Most-Restrictive-Control wins; documented precedence order).
 
 ## 7. Override Handling
@@ -102,7 +102,7 @@ overridden. Refuse the downgrade, keep the control, and record the request as a 
 anti-pattern (see `core/conflict_resolution.md`).
 
 ## 8. Output Generation
-Emit structured markdown containing the JSON blueprint (matching `core/output_schema.json`)
+Emit structured markdown containing the JSON blueprint (matching `templates/output_schema.json`)
 within a ` ```json ``` ` code block, followed by a short conversational summary for the
 developer. Every rule reference carries its `rule_id` and `source` file.
 

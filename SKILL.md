@@ -36,21 +36,21 @@ When a user provides a request:
 You **MUST** use your file-reading capabilities to read the appropriate rule sets from the workspace based on your context inference.
 
 **Always read these core files first:**
-1. `common/slim_core.md` (Applies to EVERYTHING. Non-negotiable.)
+1. `instructions/slim_core.md` (Applies to EVERYTHING. Non-negotiable.)
 2. `meta/rule_index.json` (Use this to find which files contain relevant rules.)
-3. `core/output_schema.json` (The strict blueprint structure you must output.)
-*(Note: If the application is high-risk—e.g., financial, health, multi-agent—you MUST also read `common/common-considerations.md`)*
+3. `templates/output_schema.json` (The strict blueprint structure you must output.)
+*(Note: If the application is high-risk—e.g., financial, health, multi-agent—you MUST also read `instructions/common_considerations.md`)*
 
 **Then, selectively read based on context:**
-- If the feature involves APIs: READ `domains/api/owasp_api_top10_2023.md`
-- If the feature involves Web/UI: READ `domains/web/web_owasp_top10_2025.md`
-- If the feature involves Mobile Apps (iOS/Android/Flutter): READ `domains/mobile/owasp_masvs.md`
-- If the feature involves AI Agents or orchestration: READ `domains/ai/agentic_ai_rules_baseline.md` (read `_extended.md` only for high-risk/multi-agent)
-- If the feature involves LLM APIs, chatbots, or RAG: READ `domains/ai/llm_governance_rules_baseline.md` (read `_extended.md` only for high-risk)
-- If the feature involves building/consuming MCP Servers: READ `domains/mcp/mcp_server_rules_baseline.md` (read `_extended.md` only for high-risk)
-- If specific CWE mappings are needed (e.g., injection risks): READ from `cwe/[category]/`.
+- If the feature involves APIs: READ `knowledge/api-top10/owasp_api_top10_2023.md`
+- If the feature involves Web/UI: READ `knowledge/owasp/web_owasp_top10_2025.md`
+- If the feature involves Mobile Apps (iOS/Android/Flutter): READ `knowledge/masvs/OWASP_MASVS.yaml`
+- If the feature involves AI Agents or orchestration: READ `knowledge/ai/agentic_ai_rules_baseline.md` (read `_extended.md` only for high-risk/multi-agent)
+- If the feature involves LLM APIs, chatbots, or RAG: READ `knowledge/ai/llm_governance_rules_baseline.md` (read `_extended.md` only for high-risk)
+- If the feature involves building/consuming MCP Servers: READ `knowledge/ai/mcp_server_rules_baseline.md` (read `_extended.md` only for high-risk)
+- If specific CWE mappings are needed (e.g., injection risks): READ from `knowledge/cwe/[category].md`.
 
-> **Note — Regulatory Compliance:** DPDPA, GDPR, EU AI Act, HIPAA, PCI-DSS, and SOC2 rule packs are **not currently enforced**. Do not load `compliance/dpdp/` files or apply DPDP rules in any blueprint until further notice.
+> **Note — Regulatory Compliance:** DPDPA, GDPR, EU AI Act, HIPAA, PCI-DSS, and SOC2 rule packs are **not currently enforced**. Do not load `mappings/compliance/dpdp/` files or apply DPDP rules in any blueprint until further notice.
 
 ---
 
@@ -70,7 +70,7 @@ You MUST:
 - **User Overrides**: If the user explicitly requests an override (e.g., "no MFA"), flag it as an anti-pattern, list the threat impact, and record it under `design_constraints` as a "user-approved exception".
 
 ### Strict Output Schema
-You MUST output structured markdown containing the JSON blueprint matching the schema found in `core/output_schema.json` within a ````json ```` block, plus a short conversational summary for the user.
+You MUST output structured markdown containing the JSON blueprint matching the schema found in `templates/output_schema.json` within a ````json ```` block, plus a short conversational summary for the user.
 - Ensure all rule IDs are accurate.
 - If the user provides insufficient input to plan the feature, return:
 `{ "error": "INSUFFICIENT_INPUT", "clarification_required": ["..."] }`

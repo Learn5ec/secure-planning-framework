@@ -1,0 +1,93 @@
+{
+  "version": "3.0.0",
+  "description": "Knowledge base registry. Maps standards/frameworks to their canonical locations in the repository.",
+  "standards": [
+    {
+      "id": "owasp_web_top10",
+      "name": "OWASP Top 10:2025 (Web)",
+      "canonical_location": "knowledge/owasp/web_owasp_top10_2025.md",
+      "rule_prefix": "OWASP-",
+      "status": "active"
+    },
+    {
+      "id": "owasp_api_top10",
+      "name": "OWASP API Top 10:2023",
+      "canonical_location": "knowledge/api-top10/owasp_api_top10_2023.md",
+      "rule_prefix": "API-",
+      "status": "active"
+    },
+    {
+      "id": "masvs",
+      "name": "OWASP MASVS",
+      "canonical_location": "knowledge/masvs/OWASP_MASVS.yaml",
+      "rule_prefix": "MASVS-",
+      "status": "active"
+    },
+    {
+      "id": "maswe",
+      "name": "OWASP MASWE",
+      "canonical_location": "knowledge/maswe/weaknesses/",
+      "rule_prefix": "MASWE-",
+      "status": "active"
+    },
+    {
+      "id": "mastg",
+      "name": "OWASP MASTG",
+      "canonical_location": "knowledge/mastg/",
+      "rule_prefix": "MASTG-",
+      "status": "active"
+    },
+    {
+      "id": "agentic_ai",
+      "name": "OWASP Agentic AI Top 10",
+      "canonical_location": "knowledge/ai/agentic_ai_rules_baseline.md",
+      "rule_prefix": "ASI-",
+      "status": "active"
+    },
+    {
+      "id": "llm_governance",
+      "name": "LLM/AI Security & Governance",
+      "canonical_location": "knowledge/ai/llm_governance_rules_baseline.md",
+      "rule_prefix": "LLM-GOV-",
+      "status": "active"
+    },
+    {
+      "id": "mcp",
+      "name": "MCP Secure Development",
+      "canonical_location": "knowledge/ai/mcp_server_rules_baseline.md",
+      "rule_prefix": "MCP-",
+      "status": "active"
+    },
+    {
+      "id": "dpdp",
+      "name": "Digital Personal Data Protection Act 2023",
+      "canonical_location": "mappings/compliance/dpdp/dpdp_rules.md",
+      "rule_prefix": "DPDP-",
+      "status": "disabled",
+      "disabled_reason": "DPDPA disabled pending org-wide implementation decision."
+    },
+    {
+      "id": "common_baseline",
+      "name": "Internal Secure Engineering Baseline",
+      "canonical_location": "instructions/common_considerations.md",
+      "slim_core_location": "instructions/slim_core.md",
+      "rule_prefix": "COM-",
+      "status": "active"
+    },
+    {
+      "id": "cwe",
+      "name": "Curated CWE Mappings",
+      "canonical_location": "knowledge/cwe/",
+      "rule_prefix": "CWE-",
+      "status": "active"
+    }
+  ],
+  "planned_compliance": [
+    "GDPR",
+    "EU_AI_Act",
+    "HIPAA",
+    "PCI_DSS",
+    "SOC2",
+    "ISO_27001"
+  ]
+}

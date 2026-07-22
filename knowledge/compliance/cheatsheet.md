@@ -3,10 +3,10 @@
 > [!CAUTION]
 > **DPDPA DISABLED**: DPDPA rules are not currently enforced. Do not apply DPDP rules until further notice.
 
-> **STATUS: STUB.** Clone the structure from `knowledge/owasp/owasp_cheatsheet.md`.
+> **STATUS: STUB.** Clone the structure from `knowledge/owasp/cheatsheet.md`.
 > **Purpose:** token-efficient quick reference distilled from raw sources in
 > `data/ (regulatory sources)`. This is a *reference*, not an authoritative rule pack — when enforcing,
-> cite the `rule_id` from the authoritative pack(s). (Note: `compliance/dpdp/*` is currently disabled).
+> cite the `rule_id` from the authoritative pack(s). (Note: `mappings/compliance/dpdp/*` is currently disabled).
 
 ---
 
@@ -24,5 +24,5 @@
 
 ## Cross-references
 - Authoritative rules: (Currently no active compliance packs loaded)
-- Common baseline: `common/common-considerations.md` (always applied).
+- Common baseline: `instructions/common_considerations.md` (always applied).
 - Raw source archive: `data/ (regulatory sources)`

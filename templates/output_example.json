@@ -25,7 +25,7 @@
     {
       "rule_id": "COM-038",
       "requirement": "Passwords MUST be hashed with Argon2id (preferred), bcrypt, or scrypt — never encrypted or stored in plaintext.",
-      "source": "common/common-considerations.md",
+      "source": "instructions/common_considerations.md",
       "severity": "CRITICAL",
       "cwe": ["CWE-916", "CWE-256"],
       "threat_ref": "T-01",
@@ -34,7 +34,7 @@
     {
       "rule_id": "COM-040",
       "requirement": "JWT signature MUST be verified server-side on every request; alg:none and algorithm-confusion attacks (RS256→HS256) MUST be rejected.",
-      "source": "common/common-considerations.md",
+      "source": "instructions/common_considerations.md",
       "severity": "CRITICAL",
       "cwe": ["CWE-347"],
       "threat_ref": "T-02",

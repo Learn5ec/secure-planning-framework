@@ -1,9 +1,9 @@
 # Knowledge Cheat-Sheet — OWASP (Web + API)
 
 > **Purpose:** Token-efficient quick reference distilled from the raw sources in
-> `data/` and the authoritative rule packs in `domains/`. This is a *reference*,
+> `knowledge/ai/raw/` and the authoritative rule packs in `knowledge/`. This is a *reference*,
 > not an authoritative rule pack — when enforcing, cite the `rule_id` from
-> `domains/web/web_owasp_top10_2025.md` or `domains/api/owasp_api_top10_2023.md`.
+> `knowledge/owasp/web_owasp_top10_2025.md` or `knowledge/api-top10/owasp_api_top10_2023.md`.
 
 ---
 
@@ -47,6 +47,6 @@
 - **Any sensitive data stored/sent?** → crypto + data protection (OWASP-A04-001, CWE-200/522).
 
 ## Cross-references
-- Common baseline: `common/common-considerations.md` (always applied).
-- CWE depth: `cwe/<category>/`.
-- Compliance: DPDPA is currently disabled pending org decision; do not reference `compliance/dpdp/`.
+- Common baseline: `instructions/common_considerations.md` (always applied).
+- CWE depth: `knowledge/cwe/<category>.md`.
+- Compliance: DPDPA is currently disabled pending org decision; do not reference `mappings/compliance/dpdp/`.
