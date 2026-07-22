@@ -84,7 +84,11 @@ secure-planning-framework/
 
 ## Usage
 
-### As a Skill (Claude Code, Cursor, Windsurf, Copilot)
+### As a Claude Code Skill (Primary Integration)
+
+The framework is **always-on for Claude Code** — it fires automatically on every feature planning task. To suppress:
+
+> *"Do not use SPF skill"*
 
 The framework works automatically when you describe a feature:
 
@@ -99,7 +103,7 @@ SPF: [Produces security blueprint with:
 ]
 ```
 
-### As CLI
+### As CLI (npm)
 
 ```bash
 # Install via npm
@@ -196,12 +200,9 @@ npm test
 
 ### IDE Adapters
 
-The framework includes scaffolds for:
-- **Claude Code** — `SKILL.md` at root (already integrated)
-- **Cursor** — `.cursorrules` (auto-generated, maintained locally)
-- **Windsurf** — `.windsurfrules` (auto-generated, maintained locally)
-- **VS Code Copilot** — `.github/copilot-instructions.md` (auto-generated, maintained locally)
-- **MCP Server** — `delivery/mcp/` (planned, maintained locally)
+This branch (`npm-publish`) is specifically designed for **Claude Code** integration. The framework is integrated via `SKILL.md` at the repository root.
+
+Other IDE adapters (Cursor, Windsurf, Copilot) and scaffolding directories (`delivery/`, `scripts/`) are maintained locally but not tracked in this repository.
 
 ## Best Practices
 
